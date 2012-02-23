@@ -14,3 +14,5 @@ bin
 *.fmd
 
 .cache
+fusemq-leveldb/build
+fusemq-leveldb/localhost

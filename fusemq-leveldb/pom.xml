@@ -20,23 +20,17 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.fusesource.fabric</groupId>
-    <artifactId>fabric-scala</artifactId>
+    <groupId>org.fusesource.fuse-extra</groupId>
+    <artifactId>fuse-scala</artifactId>
     <version>99-master-SNAPSHOT</version>
-    <relativePath>../../fabric/fabric-scala</relativePath>
+    <relativePath>../fuse-scala</relativePath>
   </parent>
 
-  <groupId>org.fusesource.mq</groupId>
-  <artifactId>mq-leveldb</artifactId>
-  <version>99-master-SNAPSHOT</version>
+  <artifactId>fusemq-leveldb</artifactId>
   <packaging>jar</packaging>
 
   <name>${project.artifactId}</name>
   <description>LevelDB based message storage for ActiveMQ</description>
-
-  <properties>
-    <activemq-version>5.5.1-fuse-02-02</activemq-version>
-  </properties>
 
   <dependencies>
 
@@ -170,24 +164,6 @@
 
     <!-- Testing Dependencies -->    
     <dependency>
-      <groupId>org.scalatest</groupId>
-      <artifactId>scalatest_2.9.1</artifactId>
-      <version>${scalatest-version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-      <version>${junit-version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <version>${slf4j-version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.apache.activemq</groupId>
       <artifactId>activemq-core</artifactId>
       <version>${activemq-version}</version>
@@ -214,11 +190,6 @@
       <version>2.6</version>
       <scope>test</scope>
     </dependency>
-    <!-- <dependency>
-      <groupId>commons-configuration</groupId>
-      <artifactId>commons-configuration</artifactId>
-      <version>1.6</version>
-    </dependency> -->
     <dependency>
       <groupId>org.mortbay.jetty</groupId>
       <artifactId>jetty</artifactId>
