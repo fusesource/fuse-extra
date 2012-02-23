@@ -35,7 +35,7 @@ following spring XML configuration example:
       </bean>
     </persistenceAdapter>
 
-[snapshot_jar]: http://repo.fusesource.com/nexus/content/repositories/snapshots/org/fusesource/fuse-extra/fusemq-leveldb/99-master-SNAPSHOT/fusemq-leveldb-99-master-20120223.183310-1-uber.jar
+[snapshot_jar]: http://repo.fusesource.com/nexus/service/local/artifact/maven/redirect?r=snapshots&g=org.fusesource.fuse-extra&a=fusemq-leveldb&v=99-master-SNAPSHOT&c=uber
 
 ### Configuration / Property Reference
 
