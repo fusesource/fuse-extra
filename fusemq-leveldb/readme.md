@@ -16,11 +16,12 @@ How is the LevelDB Store better than the default KahaDB store:
  * Since the broker tends to write and read queue entries sequencially, the LevelDB based index provide a much better performance than the B-Tree based indexes of KahaDB which increases throughput.
  * Unlike the KahaDB indexes, the LevelDB indexes support concurrent read acces which further improves read throughput.
  * Pauseless data log file garbage collection cycles.
- * It uses few read IO operations to load a stored message.
+ * It uses fewer read IO operations to load stored messages.
  * If a message is copied to multiple queues (Typically happens if your using virtual topics with multiple
-   consumers), then LevelDB will only journal the payload of the message once.  KahaDB will jornal it multiple times.
+   consumers), then LevelDB will only journal the payload of the message once.  KahaDB will journal it multiple times.
  * It exposes it's status via JMX for monitoring
- 
+ * Supports replication to get High Availablity 
+
 ## How to Use
 
 Download and copy the lastest [fusemq-leveldb-snapshot-uber.jar][snapshot_jar] your broker's `lib` directroy.  Then update the broker
@@ -51,7 +52,7 @@ following spring XML configuration example:
 
 ## Built in High Availability Support
 
-You can also use aa High Availability (HA) version of the LevelDB store which 
+You can also use a High Availability (HA) version of the LevelDB store which 
 works with Hadoop based file systems to achive HA of your stored messages.
 
 **Q:** What are the requirements?
