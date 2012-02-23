@@ -1,5 +1,5 @@
-/*
- * Copyright (C) FuseSource, Inc.
+/**
+ * Copyright (C) 2012 FuseSource Corp. All rights reserved.
  * http://fusesource.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.fusesource.mq.leveldb;
 
 import org.apache.activemq.broker.jmx.MBeanInfo;

@@ -1,5 +1,5 @@
-/*
- * Copyright (C) FuseSource, Inc.
+/**
+ * Copyright (C) 2012 FuseSource Corp. All rights reserved.
  * http://fusesource.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
