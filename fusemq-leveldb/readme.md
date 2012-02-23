@@ -1,9 +1,15 @@
-# The LevelDB store for FuseMQ or ActiveMQ 5.x Severs
+# The LevelDB Store
+
+## Overview
+
+The LevelDB Store is message store implementation that can be used in FuseMB and ActiveMQ messaging servers. This store depends on a relatively recent version the broker.  You can run it on either:
+
+* [FuseMB 5.5.1-fuse-02-02](http://repo.fusesource.com/nexus/content/repositories/releases/org/apache/activemq/apache-activemq/5.5.1-fuse-02-02/apache-activemq-5.5.1-fuse-02-02-bin.tar.gz) or newer
+* [ActiveMQ 5.6-SNAPSHOT](http://repository.apache.org/service/local/artifact/maven/redirect?r=snapshots&g=org.apache.activemq&a=apache-activemq&v=5.6-SNAPSHOT&e=tar.gz&c=bin) or newer
 
 ## LevelDB vs KahaDB
 
-The LevelDB based persistence backend for FuseMQ/ActiveMQ is better message store than the default
-KahaDB store which most ActiveMQ installations use in the following ways:
+How is the LevelDB Store better than the default KahaDB store:
 
  * It maitains fewer index entries per message than KahaDB which means it has a higher persistent throughput.
  * Faster recovery when a broker restarts
@@ -17,7 +23,7 @@ KahaDB store which most ActiveMQ installations use in the following ways:
  
 ## How to Use
 
-Download and copy the lastest [snapshot jar][snapshot_jar] your broker's `lib` directroy.  Then update the broker
+Download and copy the lastest [fusemq-leveldb-snapshot-uber.jar][snapshot_jar] your broker's `lib` directroy.  Then update the broker
 configuration file and change `persistenceAdapter` elements settings so that it uses the LevelDB store using the
 following spring XML configuration example: 
 
@@ -28,7 +34,6 @@ following spring XML configuration example:
         <property name="logSize" value="107374182"/>
       </bean>
     </persistenceAdapter>
-
 
 [snapshot_jar]: http://repo.fusesource.com/nexus/content/repositories/snapshots/org/fusesource/fuse-extra/fusemq-leveldb/99-master-SNAPSHOT/fusemq-leveldb-99-master-20120223.183310-1-uber.jar
 
