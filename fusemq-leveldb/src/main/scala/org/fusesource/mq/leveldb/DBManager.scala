@@ -162,7 +162,6 @@ class DelayableUOW(val manager:DBManager) extends BaseRetained {
     def size = (if(messageRecord!=null) messageRecord.data.length+20 else 0) + ((enqueues.size+dequeues.size)*50)
     
     def addToPendingStore() = {
-      manager.dispatchQueue.assertExecuting()
       var set = manager.pendingStores.get(id)
       if(set==null) {
         set = HashSet()
@@ -294,12 +293,22 @@ class DelayableUOW(val manager:DBManager) extends BaseRetained {
 
   def onCompleted() = this.synchronized {
     if ( state.stage < UowCompleted.stage ) {
+      state = UowCompleted
       if( asyncCapacityUsed != 0 ) {
         manager.asyncCapacityRemaining.addAndGet(asyncCapacityUsed)
         asyncCapacityUsed = 0
       } else {
         manager.uow_complete_latency.add(System.nanoTime() - disposed_at)
         countDownFuture.countDown
+      }
+
+      for( (id, action) <- actions ) {
+        if( !action.enqueues.isEmpty ) {
+          action.removeFromPendingStore()
+        }
+        for( queueEntry <- action.enqueues ) {
+          manager.cancelable_enqueue_actions.remove(key(queueEntry))
+        }
       }
       super.dispose
     }
@@ -485,14 +494,6 @@ class DBManager(val parent:LevelDBStore) {
           uowStoredCounter += uows.size
           uows.foreach { uow=>
             uow.onCompleted
-            uow.actions.foreach { case (id, action) =>
-              if( action.messageRecord !=null ) {
-                action.removeFromPendingStore()
-              }
-              action.enqueues.foreach { queueEntry=>
-                cancelable_enqueue_actions.remove(key(queueEntry))
-              }
-            }
           }
         }
       }
