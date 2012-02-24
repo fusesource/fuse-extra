@@ -34,12 +34,12 @@
   <description>Fuse Extra :: AMQP modules for Apache Apollo</description>
 
   <modules>
-    <module>fabric-apollo-amqp-generator</module>
-    <module>fabric-apollo-amqp-codec</module>
-    <module>fabric-apollo-amqp-protocol</module>
+    <module>fusemq-apollo-amqp-generator</module>
+    <module>fusemq-apollo-amqp-codec</module>
+    <module>fusemq-apollo-amqp-protocol</module>
     <!--
-    <module>fabric-apollo-amqp-broker</module>
-    <module>fabric-apollo-amqp-example</module>
+    <module>fusemq-apollo-amqp-broker</module>
+    <module>fusemq-apollo-amqp-example</module>
     -->
   </modules>
 

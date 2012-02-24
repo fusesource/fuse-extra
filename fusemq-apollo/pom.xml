@@ -34,10 +34,18 @@
 
   <modules>
     <module>fusemq-apollo-mqtt</module>
-<!--     <module>fusemq-apollo-cluster</module>
- -->    <module>fusemq-apollo-haleveldb</module>
-    <!-- <module>fusemq-apollo-amqp</module> -->
+    <module>fusemq-apollo-haleveldb</module>
     <module>fusemq-apollo-cli</module>
   </modules>
+
+  <profiles>
+    <profile>
+      <id>unstable</id>
+      <modules>
+        <module>fusemq-apollo-cluster</module>
+        <!-- <module>fusemq-apollo-amqp</module> -->
+      </modules>
+    </profile>
+  </profiles>
 
 </project>
