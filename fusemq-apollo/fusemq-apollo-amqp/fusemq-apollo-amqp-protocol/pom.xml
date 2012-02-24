@@ -45,14 +45,6 @@
       <version>${apollo-version}</version>
     </dependency>
 
-    <!-- Scala Support -->
-    <dependency>
-      <groupId>org.scala-lang</groupId>
-      <artifactId>scala-library</artifactId>
-      <scope>compile</scope>
-      <version>${scala-version}</version>
-    </dependency>
-
     <dependency>
       <groupId>org.apache.activemq</groupId>
       <artifactId>apollo-util</artifactId>

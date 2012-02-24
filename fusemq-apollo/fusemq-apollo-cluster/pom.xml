@@ -98,26 +98,11 @@
       <scope>provided</scope>
     </dependency> -->
 
-    <!-- Scala Support -->
-    <dependency>
-      <groupId>org.scala-lang</groupId>
-      <artifactId>scala-library</artifactId>
-      <scope>compile</scope>
-      <version>${scala-version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.scala-lang</groupId>
-      <artifactId>scala-compiler</artifactId>
-      <version>${scala-version}</version>
-      <scope>compile</scope>
-      <optional>true</optional>
-    </dependency>
-    
     <!-- Testing Dependencies -->    
     <dependency>
-      <groupId>org.scalatest</groupId>
-      <artifactId>scalatest_2.9.1</artifactId>
-      <version>${scalatest-version}</version>
+      <groupId>org.eclipse.jetty.aggregate</groupId>
+      <artifactId>jetty-all-server</artifactId>
+      <version>${jetty-version}</version>
       <scope>test</scope>
     </dependency>
     

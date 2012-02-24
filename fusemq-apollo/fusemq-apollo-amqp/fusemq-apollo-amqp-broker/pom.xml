@@ -49,21 +49,6 @@
       <version>${apollo-version}</version>
     </dependency>
 
-    <!-- Scala Support -->
-    <dependency>
-      <groupId>org.scala-lang</groupId>
-      <artifactId>scala-library</artifactId>
-      <scope>compile</scope>
-      <version>${scala-version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.scala-lang</groupId>
-      <artifactId>scala-compiler</artifactId>
-      <version>${scala-version}</version>
-      <scope>compile</scope>
-      <optional>true</optional>
-    </dependency>
-
     <!-- so we can test against a persistence store -->
     <dependency>
       <groupId>org.apache.activemq</groupId>
