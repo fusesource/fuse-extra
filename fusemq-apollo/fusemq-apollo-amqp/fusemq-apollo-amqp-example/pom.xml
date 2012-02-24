@@ -20,17 +20,17 @@
 
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <artifactId>fabric-apollo-project</artifactId>
-    <groupId>org.fusesource.fabric.apollo</groupId>
+    <groupId>org.fusesource.fuse-extra</groupId>
+    <artifactId>fusemq-apollo-amqp</artifactId>
     <version>99-master-SNAPSHOT</version>
     <relativePath>..</relativePath>
   </parent>
 
-  <groupId>org.fusesource.fabric.apollo</groupId>
   <artifactId>fabric-apollo-amqp-example</artifactId>
-  <name>${project.artifactId}</name>
-  <version>99-master-SNAPSHOT</version>
   <packaging>jar</packaging>
+
+  <name>${project.artifactId}</name>
+  <description>Fuse Extra :: AMQP Examples</description>
 
   <dependencies>
 

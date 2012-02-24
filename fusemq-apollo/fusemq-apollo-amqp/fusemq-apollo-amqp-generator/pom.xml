@@ -20,21 +20,23 @@
 
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.fusesource.fabric.apollo.amqp</groupId>
-    <artifactId>fabric-apollo-amqp-project</artifactId>
+    <groupId>org.fusesource.fuse-extra</groupId>
+    <artifactId>fusemq-apollo-amqp</artifactId>
     <version>99-master-SNAPSHOT</version>
     <relativePath>..</relativePath>
   </parent>
 
-  <groupId>org.fusesource.fabric.apollo.amqp</groupId>
-  <artifactId>fabric-apollo-amqp-generator</artifactId>
-  <version>99-master-SNAPSHOT</version>
+  <artifactId>fusemq-apollo-amqp-generator</artifactId>
   <packaging>maven-plugin</packaging>
 
   <name>${project.artifactId}</name>
-  <description>
-    Code generator for AMQP described types
-  </description>
+  <description>Fuse Extra :: Code generator for AMQP described types</description>
+
+  <properties>
+    <xjc-version>2.1.10.1</xjc-version>
+    <jaxb-api-version>2.1</jaxb-api-version>
+    <jaxb-version>2.1.13</jaxb-version>
+  </properties>
 
   <dependencies>
 

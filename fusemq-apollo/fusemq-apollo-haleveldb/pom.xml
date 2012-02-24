@@ -40,7 +40,6 @@
     <apollo-version>1.1-SNAPSHOT</apollo-version>
     <karaf-version>2.2.2</karaf-version>
     <jetty-version>7.5.1.v20110908</jetty-version>
-    <hawtdispatch-version>1.9-SNAPSHOT</hawtdispatch-version>
     <scalate-version>1.5.3</scalate-version>
     <jackson-version>1.9.2</jackson-version>
   </properties>

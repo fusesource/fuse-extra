@@ -20,21 +20,21 @@
 
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.fusesource.fabric.apollo.amqp</groupId>
-    <artifactId>fabric-apollo-amqp-project</artifactId>
+    <groupId>org.fusesource.fuse-extra</groupId>
+    <artifactId>fusemq-apollo-amqp</artifactId>
     <version>99-master-SNAPSHOT</version>
     <relativePath>..</relativePath>
   </parent>
 
-  <groupId>org.fusesource.fabric.apollo.amqp</groupId>
-  <artifactId>fabric-apollo-amqp-codec</artifactId>
-  <version>99-master-SNAPSHOT</version>
+  <artifactId>fusemq-apollo-amqp-codec</artifactId>
   <packaging>jar</packaging>
 
   <name>${project.artifactId}</name>
-  <description>
-    Java API for the AMQP domain object model and associated encoders/decoders
-  </description>
+  <description>Fuse Extra ::Java API for the AMQP domain object model and associated encoders/decoders</description>
+
+  <properties>
+    <hawtdispatch-version>1.9-SNAPSHOT</hawtdispatch-version>
+  </properties>
 
   <dependencies>
 
@@ -43,19 +43,12 @@
       <artifactId>hawtbuf</artifactId>
       <version>${hawtbuf-version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.fusesource.hawtdispatch</groupId>
+      <artifactId>hawtdispatch-scala</artifactId>
+      <version>${hawtdispatch-version}</version>
+    </dependency>
 
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>${junit-version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <version>${slf4j-version}</version>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
 
@@ -71,8 +64,8 @@
       </plugin>
 
       <plugin>
-        <groupId>org.fusesource.fabric.apollo.amqp</groupId>
-        <artifactId>fabric-apollo-amqp-generator</artifactId>
+        <groupId>org.fusesource.fuse-extra</groupId>
+        <artifactId>fusemq-apollo-amqp-generator</artifactId>
         <version>99-master-SNAPSHOT</version>
         <configuration>
           <mainSourceDirectory>${basedir}/src/main/resources/amqp</mainSourceDirectory>

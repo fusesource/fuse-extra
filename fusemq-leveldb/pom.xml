@@ -47,14 +47,12 @@
       <groupId>org.fusesource.hawtbuf</groupId>
       <artifactId>hawtbuf-proto</artifactId>
       <version>${hawtbuf-version}</version>
-      <!-- <scope>provided</scope> -->
     </dependency>
 
     <dependency>
       <groupId>org.fusesource.hawtdispatch</groupId>
       <artifactId>hawtdispatch-scala</artifactId>
       <version>${hawtdispatch-version}</version>
-      <!-- <scope>provided</scope> -->
     </dependency>
     
     <!-- <dependency>

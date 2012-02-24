@@ -18,25 +18,29 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
-    <groupId>org.fusesource.fabric</groupId>
-    <artifactId>fabric-scala</artifactId>
+    <groupId>org.fusesource.fuse-extra</groupId>
+    <artifactId>fuse-scala</artifactId>
     <version>99-master-SNAPSHOT</version>
-    <relativePath>../../../fabric/fabric-scala</relativePath>
+    <relativePath>../../../fuse-scala</relativePath>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.fusesource.fabric.apollo.amqp</groupId>
-  <artifactId>fabric-apollo-amqp-protocol</artifactId>
+  <artifactId>fusemq-apollo-amqp-protocol</artifactId>
   <packaging>jar</packaging>
+
   <name>${project.artifactId}</name>
-  <version>99-master-SNAPSHOT</version>
+  <description>Fuse Extra :: AMQP Protocol Handler</description>
+
+  <properties>
+    <apollo-version>1.1-SNAPSHOT</apollo-version>
+  </properties>
 
   <dependencies>
 
     <dependency>
-      <groupId>org.fusesource.fabric.apollo.amqp</groupId>
-      <artifactId>fabric-apollo-amqp-codec</artifactId>
+      <groupId>org.fusesource.fuse-extra</groupId>
+      <artifactId>fusemq-apollo-amqp-codec</artifactId>
       <version>99-master-SNAPSHOT</version>
     </dependency>
     <dependency>

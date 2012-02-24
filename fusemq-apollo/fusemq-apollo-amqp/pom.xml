@@ -27,6 +27,7 @@
 
   <modelVersion>4.0.0</modelVersion>
 
+  <groupId>org.fusesource.fuse-extra</groupId>
   <artifactId>fusemq-apollo-amqp</artifactId>
   <packaging>pom</packaging>
 
