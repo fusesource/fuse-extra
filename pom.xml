@@ -75,6 +75,8 @@
     <scalatest-version>1.6.1</scalatest-version>
     <slf4j-api-version>1.6.1</slf4j-api-version>
     <slf4j-version>1.6.1</slf4j-version>
+    <log4j-version>1.2.16</log4j-version>
+    <osgi-version>4.2.0</osgi-version>
   </properties>
 
   <distributionManagement>

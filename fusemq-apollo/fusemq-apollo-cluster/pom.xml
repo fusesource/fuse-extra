@@ -22,23 +22,25 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.fusesource.fabric</groupId>
-    <artifactId>fabric-scala</artifactId>
+    <groupId>org.fusesource.fuse-extra</groupId>
+    <artifactId>fuse-scala</artifactId>
     <version>99-master-SNAPSHOT</version>
-    <relativePath>../../fabric/fabric-scala</relativePath>
+    <relativePath>../../fuse-scala</relativePath>
   </parent>
 
-  <groupId>org.fusesource.fabric.apollo</groupId>
-  <artifactId>fabric-apollo-cluster</artifactId>
-  <version>99-master-SNAPSHOT</version>
+  <artifactId>fusemq-apollo-cluster</artifactId>
   <packaging>jar</packaging>
 
   <name>${project.artifactId}</name>
+  <description>Fuse Extra :: Clustering for Apache Apollo</description>
 
   <properties>
+    <apollo-version>1.1-SNAPSHOT</apollo-version>
     <karaf-version>2.2.2</karaf-version>
     <jetty-version>7.5.1.v20110908</jetty-version>
     <hawtdispatch-version>1.9-SNAPSHOT</hawtdispatch-version>
+    <scalate-version>1.5.3</scalate-version>
+    <fabric-version>99-master-SNAPSHOT</fabric-version>
   </properties>
 
   <dependencies>
@@ -59,36 +61,20 @@
     <dependency>
       <groupId>org.fusesource.fabric</groupId>
       <artifactId>fabric-groups</artifactId>
-      <version>99-master-SNAPSHOT</version>
+      <version>${fabric-version}</version>
     </dependency>
     <dependency>
       <groupId>org.fusesource.fabric</groupId>
       <artifactId>fabric-linkedin-zookeeper</artifactId>
+      <version>${fabric-version}</version>
     </dependency>
+    
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
       <scope>provided</scope>
+      <version>${log4j-version}</version>
     </dependency>
-
-    <!-- for zookeeper integration -->
-<!--
-    <dependency>
-      <groupId>org.linkedin</groupId>
-      <artifactId>org.linkedin.zookeeper-impl</artifactId>
-      <version>${linkedin-zookeeper-version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>com.sun.jdmk</groupId>
-          <artifactId>jmxtools</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-api</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
--->
 
     <!-- for osgi integration -->
     <dependency>
@@ -105,12 +91,12 @@
       <version>${apollo-version}</version>
       <optional>true</optional>
     </dependency>
-    <dependency>
+    <!-- <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
       <version>${servlet-api-version}</version>
       <scope>provided</scope>
-    </dependency>
+    </dependency> -->
 
     <!-- Scala Support -->
     <dependency>
