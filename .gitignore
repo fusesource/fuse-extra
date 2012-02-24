@@ -16,3 +16,5 @@ bin
 .cache
 fusemq-leveldb/build
 fusemq-leveldb/localhost
+fusemq-apollo/fusemq-apollo-haleveldb/build/
+fusemq-apollo/fusemq-apollo-mqtt/webapp-resources/

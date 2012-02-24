@@ -136,10 +136,9 @@ class LevelDBFastEnqueueTest extends TestCase {
     startBroker(false, checkpoint)
   }
 
-  @Before def setProps: Unit = {
-  }
+  override def tearDown() = stopBroker
 
-  @After def stopBroker: Unit = {
+  def stopBroker: Unit = {
     if (broker != null) {
       broker.stop
       broker.waitUntilStopped

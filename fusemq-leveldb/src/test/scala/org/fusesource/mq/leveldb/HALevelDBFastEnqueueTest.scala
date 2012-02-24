@@ -31,12 +31,12 @@ import java.util.concurrent.TimeUnit
  */
 class HALevelDBFastEnqueueTest extends LevelDBFastEnqueueTest {
 
-  override protected def setUp: Unit = {
+  override def setUp: Unit = {
     TestingHDFSServer.start
     super.setUp
   }
 
-  override protected def tearDown: Unit = {
+  override def tearDown: Unit = {
     super.tearDown
     TestingHDFSServer.stop
   }

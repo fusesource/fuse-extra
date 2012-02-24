@@ -23,7 +23,7 @@ import org.fusesource.fabric.apollo.cluster.ClusterTestSupport
 
 class HALevelDBClusterTest extends ClusterTestSupport {
 
-  test("Standby haleveldb broker.") {
+  ignore("Standby haleveldb broker.") {
 
     // Lets use a socket proxy so we can simulate a network disconnect.
     val proxy = new SocketProxy(new java.net.URI("tcp://"+zk_url))

@@ -37,22 +37,6 @@
 
 
   <properties>
-
-    <!--<activemq-version>5.5.1-fuse-02-02</activemq-version>-->
-
-    <!--<forge-project-id>fuse-extra</forge-project-id>-->
-    <!--<hadoop-version>1.0.0</hadoop-version>-->
-    <!--<hawtbuf-version>1.8</hawtbuf-version>-->
-    <!--<hawtdispatch-version>1.8</hawtdispatch-version>-->
-    <!--<junit-version>4.8.1</junit-version>-->
-    <!--<mvnplugins-version>1.14</mvnplugins-version>-->
-    <!--<scala-plugin-version>2.15.1</scala-plugin-version>-->
-    <!--<scala-version>2.9.1</scala-version>-->
-    <!--<scalatest-version>1.6.1</scalatest-version>-->
-    <!--<slf4j-api-version>1.6.1</slf4j-api-version>-->
-    <!--<slf4j-version>1.6.1</slf4j-version>-->
-    <!--<log4j-version>1.2.16</log4j-version>-->
-    <!--<osgi-version>4.2.0</osgi-version>-->
   </properties>
 
   <dependencies>
@@ -143,10 +127,6 @@
           <groupId>org.apache.commons</groupId>
           <artifactId>commons-math</artifactId>
         </exclusion>
-        <!--<exclusion>-->
-          <!--<groupId>commons-configuration</groupId>-->
-          <!--<artifactId>commons-configuration</artifactId>-->
-        <!--</exclusion>-->
         <exclusion>
           <groupId>commons-net</groupId>
           <artifactId>commons-net</artifactId>
@@ -320,6 +300,13 @@
           </artifactSet>            
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <forkMode>always</forkMode>
+        </configuration>
+      </plugin>
     </plugins>
-  </build>
+  </build>  
 </project>
