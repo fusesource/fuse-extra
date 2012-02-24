@@ -29,7 +29,9 @@
     <relativePath>..</relativePath>
   </parent>
 
+  <groupId>org.fusesource.fuse-extra</groupId>
   <artifactId>fuse-scala</artifactId>
+  <version>99-master-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>${project.artifactId}</name>

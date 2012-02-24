@@ -37,6 +37,12 @@
   <name>${project.artifactId}</name>
   <description>Fuse Extra: A collection of addons and plugins for the open source projects FuseSource support</description>
 
+  <modules>
+    <module>fuse-scala</module>
+    <module>fusemq-leveldb</module>
+    <module>fusemq-apollo</module>
+  </modules>
+
   <url>https://github.com/fusesource/fuse-extra</url>
 
   <organization>
@@ -103,11 +109,6 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <modules>
-    <module>fuse-scala</module>
-    <module>fusemq-leveldb</module>
-  </modules>
 
   <build>
     <defaultGoal>install</defaultGoal>
