@@ -14,28 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.fusesource.fabric.apollo.amqp.protocol.api
 
-package org.fusesource.fabric.apollo.amqp.protocol.api;
-
-import org.fusesource.fabric.apollo.amqp.codec.interfaces.Outcome;
-import org.fusesource.fabric.apollo.amqp.codec.types.ReceiverSettleMode;
+import org.fusesource.hawtbuf.Buffer
 
 /**
  *
  */
-public interface Receiver extends Link {
-
-    public void setCreditHandler(CreditHandler handler);
-
-    public void setMessageHandler(MessageHandler handler);
-
-    public void setSettleMode(ReceiverSettleMode mode);
-
-    public void settle(long deliveryId, Outcome outcome);
-
-    public void addLinkCredit(int credit);
-
-    public void drainLinkCredit();
-
-
+abstract trait RawMessageHandler extends MessageHandler[Buffer] {
 }

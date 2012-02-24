@@ -14,21 +14,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.fusesource.fabric.apollo.amqp.protocol.api;
-
-import org.fusesource.fabric.apollo.amqp.protocol.AMQPConnection;
+package org.fusesource.fabric.apollo.amqp.protocol.api
 
 /**
- *
+ * A callback used by a Connection to communicate session creation/destruction
  */
-public class AMQPConnectionFactory {
+abstract trait SessionHandler {
+  /**
+   * Called when a new session is being created on a connection
+   *
+   * @param session    The session being created
+   */
+  def sessionCreated(session: Session): Unit
 
-    public static Connection createConnection() {
-        return AMQPConnection.createConnection();
-    }
-
-    public static ServerConnection createServerConnection(ConnectionHandler handler) {
-        return AMQPConnection.createServerConnection(handler);
-    }
+  /**
+   * Called when a session is being released from a connection
+   *
+   * @param session    The session being released
+   */
+  def sessionReleased(session: Session): Unit
 }

@@ -50,7 +50,7 @@ class AMQPSender extends AMQPLink with Sender with Logging {
 
   trace("Constructed AMQP sender chain : %s", display_chain(this))
 
-  def full() = getSession.sufficientSessionCredit() && tracker.credit
+  def full() = getSession.sufficientSessionCredit && tracker.credit
 
   def offer(message: Buffer):Boolean = false
 

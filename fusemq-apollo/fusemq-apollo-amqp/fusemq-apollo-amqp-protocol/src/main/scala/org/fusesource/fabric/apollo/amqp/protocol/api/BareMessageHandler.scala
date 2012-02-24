@@ -14,12 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.fusesource.fabric.apollo.amqp.protocol.api
 
-package org.fusesource.fabric.apollo.amqp.protocol.api;
+import org.fusesource.fabric.apollo.amqp.codec.api.BareMessage
 
 /**
  *
  */
-public interface CreditHandler {
-    public void needLinkCredit(Receiver receiver, int available);
+abstract trait BareMessageHandler extends MessageHandler[BareMessage[_]] {
 }

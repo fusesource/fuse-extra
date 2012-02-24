@@ -14,23 +14,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.fusesource.fabric.apollo.amqp.protocol.api;
-
-import org.fusesource.fabric.apollo.amqp.codec.types.Source;
-import org.fusesource.fabric.apollo.amqp.codec.types.Target;
+package org.fusesource.fabric.apollo.amqp.protocol.api
 
 /**
  *
  */
-public class AMQPSupport {
-
-    public Source toSource(org.fusesource.fabric.apollo.amqp.codec.interfaces.Source source) {
-        return (Source) source;
-    }
-
-    public Target toTarget(org.fusesource.fabric.apollo.amqp.codec.interfaces.Target target) {
-        return (Target) target;
-    }
-
+abstract trait AvailableHandler {
+  /**
+   * Called by a sender when updating the peer with the sender's flow
+   * state, the amount returned is the amount of message units available
+   * at the sender to be sent
+   * @param sender
+   * @return
+   */
+  def getAvailable(sender: Sender): Int
 }

@@ -14,44 +14,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.fusesource.fabric.apollo.amqp.protocol.api;
+package org.fusesource.fabric.apollo.amqp.protocol.api
 
 /**
  * Represents an AMQP server that listens for incoming client connections
  *
  * @author Stan Lewis
  */
-public interface ServerConnection {
+abstract trait ServerConnection {
+  /**
+   * Sets the container ID for this ServerConnection and all connections created by it
+   *
+   * @param id
+   */
+  def setContainerID(id: String): Unit
 
-    /**
-     * Sets the container ID for this ServerConnection and all connections created by it
-     *
-     * @param id
-     */
-    public void setContainerID(String id);
+  /**
+   * Binds this ServerConnection to the specified URI
+   *
+   * @param uri
+   * @param onComplete
+   */
+  def bind(uri: String, onComplete: Runnable): Unit
 
-    /**
-     * Binds this ServerConnection to the specified URI
-     *
-     * @param uri
-     * @param onComplete
-     */
-    public void bind(String uri, Runnable onComplete);
+  /**
+   * Gets the port this ServerConnection is bound to
+   *
+   * @return
+   */
+  def getListenPort: Int
 
-    /**
-     * Gets the port this ServerConnection is bound to
-     *
-     * @return
-     */
-    public int getListenPort();
+  /**
+   * Gets the hostname this ServerConnection is bound to
+   *
+   * @return
+   */
+  def getListenHost: String
 
-    /**
-     * Gets the hostname this ServerConnection is bound to
-     *
-     * @return
-     */
-    public String getListenHost();
-
-    public void unbind();
+  def unbind: Unit
 }

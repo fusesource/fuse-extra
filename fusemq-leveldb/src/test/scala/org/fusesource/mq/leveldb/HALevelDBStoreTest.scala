@@ -14,13 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.fusesource.mq.leveldb
 
-package org.fusesource.mq.leveldb;
-
-import org.apache.activemq.store.PersistenceAdapter;
-import org.apache.activemq.store.PersistenceAdapterTestSupport;
-
-import java.io.File;
+import org.apache.activemq.store.PersistenceAdapter
+import java.io.File
 
 /**
  * <p>
@@ -28,19 +25,24 @@ import java.io.File;
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-public class LevelDBStoreTest extends PersistenceAdapterTestSupport {
+class HALevelDBStoreTest extends LevelDBStoreTest {
+  override protected def setUp: Unit = {
+    TestingHDFSServer.start
+    super.setUp
+  }
 
-    // TODO: The LevelDB store does not maintain a unique index of messageIds so
-    // so it will never be able to detect duplicate messages.
-    public void testStoreCanHandleDupMessages() {
-    }
+  override protected def tearDown: Unit = {
+    super.tearDown
+    TestingHDFSServer.stop
+  }
 
-    protected PersistenceAdapter createPersistenceAdapter(boolean delete) {
-        LevelDBStore store = new LevelDBStore();
-        store.setDirectory(new File("target/activemq-data/haleveldb"));
-        if (delete) {
-            store.deleteAllMessages();
-        }
-        return store;
+  override protected def createPersistenceAdapter(delete: Boolean): PersistenceAdapter = {
+    var store: HALevelDBStore = new HALevelDBStore
+    store.setDirectory(new File("target/activemq-data/haleveldb"))
+    store.setDfsDirectory("localhost")
+    if (delete) {
+      store.deleteAllMessages
     }
+    return store
+  }
 }

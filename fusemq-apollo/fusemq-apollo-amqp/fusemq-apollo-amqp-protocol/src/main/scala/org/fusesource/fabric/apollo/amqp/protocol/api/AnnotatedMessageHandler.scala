@@ -14,14 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.fusesource.fabric.apollo.amqp.protocol.api
 
-package org.fusesource.fabric.apollo.amqp.protocol.api;
-
-import org.fusesource.fabric.apollo.amqp.codec.api.BareMessage;
+import org.fusesource.fabric.apollo.amqp.codec.api.AnnotatedMessage
 
 /**
  *
  */
-public interface BareMessageHandler extends MessageHandler<BareMessage> {
-
+abstract trait AnnotatedMessageHandler extends MessageHandler[AnnotatedMessage] {
 }

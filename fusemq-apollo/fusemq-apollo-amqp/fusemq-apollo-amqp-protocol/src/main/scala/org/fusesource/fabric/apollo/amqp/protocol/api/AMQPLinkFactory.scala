@@ -14,20 +14,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.fusesource.fabric.apollo.amqp.protocol.api
 
-package org.fusesource.fabric.apollo.amqp.protocol.api;
+import org.fusesource.fabric.apollo.amqp.protocol.AMQPReceiver
+import org.fusesource.fabric.apollo.amqp.protocol.AMQPSender
 
 /**
- * A callback used to notify when a new incoming client connection is accepted
  *
- * @author Stan Lewis
  */
-public interface ConnectionHandler {
+object AMQPLinkFactory {
+  def createSender(name: String): Sender = {
+    return AMQPSender.create(name)
+  }
 
-    /**
-     * Called when a new connection is created
-     *
-     * @param connection the connection being created
-     */
-    public void connectionCreated(Connection connection);
+  def createReceiver(name: String): Receiver = {
+    return AMQPReceiver.create(name)
+  }
 }

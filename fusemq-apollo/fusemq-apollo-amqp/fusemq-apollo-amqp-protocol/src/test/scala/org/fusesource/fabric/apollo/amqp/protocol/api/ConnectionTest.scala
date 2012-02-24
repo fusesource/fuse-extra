@@ -49,7 +49,7 @@ class ConnectionTest extends FunSuiteSupport with ShouldMatchers with Logging {
     })
 
     server.bind(uri, NOOP)
-    val client = AMQPConnectionFactory.createConnection()
+    val client = AMQPConnectionFactory.createConnection
     client.onDisconnected(^ {
       latch.countDown
     })
@@ -105,7 +105,7 @@ class ConnectionTest extends FunSuiteSupport with ShouldMatchers with Logging {
     })
 
     server.bind(uri, NOOP)
-    val client = AMQPConnectionFactory.createConnection()
+    val client = AMQPConnectionFactory.createConnection
     client.onDisconnected(^ {
       info("Disconnecting\n")
     })
@@ -134,7 +134,7 @@ class ConnectionTest extends FunSuiteSupport with ShouldMatchers with Logging {
     sessions_ended should be (1)
     sessions_started should be (1)
 
-    client.error() should be (null)
+    client.error should be (null)
     server.unbind
   }
 
@@ -176,7 +176,7 @@ class ConnectionTest extends FunSuiteSupport with ShouldMatchers with Logging {
 
     var num = 0
 
-    val client = AMQPConnectionFactory.createConnection()
+    val client = AMQPConnectionFactory.createConnection
     client.setSessionHandler(new SessionHandler {
       def sessionCreated(session: Session) {
         num = num + 1
@@ -220,7 +220,7 @@ class ConnectionTest extends FunSuiteSupport with ShouldMatchers with Logging {
 
     latch.getCount should be (0)
 
-    client.error() should be (null)
+    client.error should be (null)
     server.unbind
   }
 
@@ -262,7 +262,7 @@ class ConnectionTest extends FunSuiteSupport with ShouldMatchers with Logging {
 
     var num = 0
 
-    val client = AMQPConnectionFactory.createConnection()
+    val client = AMQPConnectionFactory.createConnection
     client.setSessionHandler(new SessionHandler {
       def sessionCreated(session: Session) {
         num = num + 1
@@ -305,7 +305,7 @@ class ConnectionTest extends FunSuiteSupport with ShouldMatchers with Logging {
 
     latch.getCount should be (0)
 
-    client.error() should be (null)
+    client.error should be (null)
     server.unbind
   }
 }

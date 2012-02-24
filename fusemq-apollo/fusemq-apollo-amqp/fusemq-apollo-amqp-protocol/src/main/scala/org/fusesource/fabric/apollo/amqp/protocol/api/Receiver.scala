@@ -14,26 +14,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.fusesource.fabric.apollo.amqp.protocol.api
 
-package org.fusesource.fabric.apollo.amqp.protocol.api;
+import org.fusesource.fabric.apollo.amqp.codec.interfaces.Outcome
+import org.fusesource.fabric.apollo.amqp.codec.types.ReceiverSettleMode
 
 /**
- * A callback used to notify when a new incoming or outgoing link is either attached to or detached from a session
  *
- * @author Stan Lewis
  */
-public interface LinkHandler {
+abstract trait Receiver extends Link {
+  def setCreditHandler(handler: CreditHandler): Unit
 
-    /**
-     * @param session the session the remote link is attaching to
-     * @param peer
-     */
-    public void linkAttaching(Session session, Link peer);
+  def setMessageHandler(handler: MessageHandler[_]): Unit
 
-    /**
-     * @param session the session the remote link is detaching from
-     * @param peer
-     */
-    public void linkDetaching(Session session, Link peer);
+  def setSettleMode(mode: ReceiverSettleMode): Unit
 
+  def settle(deliveryId: Long, outcome: Outcome): Unit
+
+  def addLinkCredit(credit: Int): Unit
+
+  def drainLinkCredit: Unit
 }

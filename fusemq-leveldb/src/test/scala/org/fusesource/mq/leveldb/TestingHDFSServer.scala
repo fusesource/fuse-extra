@@ -14,12 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.fusesource.mq.leveldb
 
-package org.fusesource.mq.leveldb;
-
-import org.apache.activemq.store.PersistenceAdapter;
-
-import java.io.File;
+import org.apache.hadoop.conf.Configuration
+import org.apache.hadoop.fs.FileSystem
+import org.apache.hadoop.hdfs.MiniDFSCluster
+import java.io.IOException
 
 /**
  * <p>
@@ -27,27 +27,25 @@ import java.io.File;
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-public class HALevelDBStoreTest extends LevelDBStoreTest {
+object TestingHDFSServer {
+  private[leveldb] def start: Unit = {
+    var conf: Configuration = new Configuration
+    cluster = new MiniDFSCluster(conf, 1, true, null)
+    cluster.waitActive
+    fs = cluster.getFileSystem
+  }
 
-    @Override
-    protected void setUp() throws Exception {
-        TestingHDFSServer.start();
-        super.setUp();
+  private[leveldb] def stop: Unit = {
+    try {
+      cluster.shutdown
     }
+    catch {
+      case e: Throwable => {
+        e.printStackTrace
+      }
+    }
+  }
 
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
-        TestingHDFSServer.stop();
-    }
-
-    protected PersistenceAdapter createPersistenceAdapter(boolean delete) {
-        HALevelDBStore store = new HALevelDBStore();
-        store.setDirectory(new File("target/activemq-data/haleveldb"));
-        store.setDfsDirectory("localhost");
-        if (delete) {
-            store.deleteAllMessages();
-        }
-        return store;
-    }
+  private[leveldb] var cluster: MiniDFSCluster = null
+  private[leveldb] var fs: FileSystem = null
 }

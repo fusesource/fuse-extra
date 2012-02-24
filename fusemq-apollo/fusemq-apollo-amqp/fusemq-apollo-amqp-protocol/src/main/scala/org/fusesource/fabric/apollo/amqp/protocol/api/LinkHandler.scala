@@ -14,25 +14,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.fusesource.fabric.apollo.amqp.protocol.api;
+package org.fusesource.fabric.apollo.amqp.protocol.api
 
 /**
- * A callback used by a Connection to communicate session creation/destruction
+ * A callback used to notify when a new incoming or outgoing link is either attached to or detached from a session
+ *
+ * @author Stan Lewis
  */
-public interface SessionHandler {
+abstract trait LinkHandler {
+  /**
+   * @param session the session the remote link is attaching to
+   * @param peer
+   */
+  def linkAttaching(session: Session, peer: Link): Unit
 
-    /**
-     * Called when a new session is being created on a connection
-     *
-     * @param session    The session being created
-     */
-    public void sessionCreated(Session session);
-
-    /**
-     * Called when a session is being released from a connection
-     *
-     * @param session    The session being released
-     */
-    public void sessionReleased(Session session);
+  /**
+   * @param session the session the remote link is detaching from
+   * @param peer
+   */
+  def linkDetaching(session: Session, peer: Link): Unit
 }

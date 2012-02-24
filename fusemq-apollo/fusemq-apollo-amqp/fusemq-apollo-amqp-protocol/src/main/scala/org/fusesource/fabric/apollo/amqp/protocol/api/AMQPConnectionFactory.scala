@@ -14,21 +14,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.fusesource.fabric.apollo.amqp.protocol.api
 
-package org.fusesource.fabric.apollo.amqp.protocol.api;
+import org.fusesource.fabric.apollo.amqp.protocol.AMQPConnection
 
 /**
  *
  */
-public interface AvailableHandler {
+object AMQPConnectionFactory {
+  def createConnection: Connection = {
+    return AMQPConnection.createConnection
+  }
 
-    /**
-     * Called by a sender when updating the peer with the sender's flow
-     * state, the amount returned is the amount of message units available
-     * at the sender to be sent
-     * @param sender
-     * @return
-     */
-    public int getAvailable(Sender sender);
-
+  def createServerConnection(handler: ConnectionHandler): ServerConnection = {
+    return AMQPConnection.createServerConnection(handler)
+  }
 }

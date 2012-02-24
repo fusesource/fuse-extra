@@ -14,14 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.fusesource.mq.leveldb
 
-package org.fusesource.mq.leveldb;
-
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.hdfs.MiniDFSCluster;
-
-import java.io.IOException;
+import org.apache.activemq.store.PersistenceAdapter
+import org.apache.activemq.store.PersistenceAdapterTestSupport
+import java.io.File
 
 /**
  * <p>
@@ -29,24 +26,16 @@ import java.io.IOException;
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-public class TestingHDFSServer {
+class LevelDBStoreTest extends PersistenceAdapterTestSupport {
+  override def testStoreCanHandleDupMessages: Unit = {
+  }
 
-    static MiniDFSCluster cluster = null;
-    static FileSystem fs = null;
-
-    static void start() throws IOException {
-        Configuration conf = new Configuration();
-        cluster = new MiniDFSCluster(conf, 1, true, null);
-        cluster.waitActive();
-        fs = cluster.getFileSystem();
+  protected def createPersistenceAdapter(delete: Boolean): PersistenceAdapter = {
+    var store: LevelDBStore = new LevelDBStore
+    store.setDirectory(new File("target/activemq-data/haleveldb"))
+    if (delete) {
+      store.deleteAllMessages
     }
-
-    static void stop() {
-        try {
-            cluster.shutdown();
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-    }
-
+    return store
+  }
 }

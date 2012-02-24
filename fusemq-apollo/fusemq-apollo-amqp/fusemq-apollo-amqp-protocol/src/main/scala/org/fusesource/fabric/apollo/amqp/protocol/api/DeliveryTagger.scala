@@ -14,14 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.fusesource.fabric.apollo.amqp.protocol.api
 
-package org.fusesource.fabric.apollo.amqp.protocol.api;
-
-import org.fusesource.hawtbuf.Buffer;
+import org.fusesource.hawtbuf.Buffer
 
 /**
  *
  */
-public interface RawMessageHandler extends MessageHandler<Buffer> {
-
+abstract trait DeliveryTagger {
+  def setTag(target: Buffer, deliveryId: Long, message: Buffer): Unit
 }

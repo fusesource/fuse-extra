@@ -14,17 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.fusesource.fabric.apollo.amqp.protocol.api
 
-package org.fusesource.fabric.apollo.amqp.protocol.api;
-
-import org.fusesource.fabric.apollo.amqp.codec.api.AnnotatedMessage;
-import org.fusesource.fabric.apollo.amqp.codec.interfaces.Outcome;
+import org.fusesource.fabric.apollo.amqp.codec.api.AnnotatedMessage
+import org.fusesource.fabric.apollo.amqp.codec.interfaces.Outcome
 
 /**
  *
  */
-public interface AckHandler {
-
-    public void settled(long deliveryId, AnnotatedMessage message, Outcome outcome);
-
+abstract trait AckHandler {
+  def settled(deliveryId: Long, message: AnnotatedMessage, outcome: Outcome): Unit
 }

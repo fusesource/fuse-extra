@@ -14,16 +14,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.fusesource.fabric.apollo.amqp.protocol.api;
-
-import org.fusesource.hawtbuf.Buffer;
+package org.fusesource.fabric.apollo.amqp.protocol.api
 
 /**
+ * A callback used to notify when a new incoming client connection is accepted
  *
+ * @author Stan Lewis
  */
-public interface DeliveryTagger {
-
-    public void setTag(Buffer target, long deliveryId, Buffer message);
-
+abstract trait ConnectionHandler {
+  /**
+   * Called when a new connection is created
+   *
+   * @param connection the connection being created
+   */
+  def connectionCreated(connection: Connection): Unit
 }

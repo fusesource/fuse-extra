@@ -14,22 +14,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.fusesource.fabric.apollo.amqp.protocol.api
 
-package org.fusesource.fabric.apollo.amqp.protocol.api;
-
-import org.fusesource.fabric.apollo.amqp.protocol.AMQPReceiver;
-import org.fusesource.fabric.apollo.amqp.protocol.AMQPSender;
+import org.fusesource.fabric.apollo.amqp.codec.types.Source
+import org.fusesource.fabric.apollo.amqp.codec.types.Target
 
 /**
  *
  */
-public class AMQPLinkFactory {
+class AMQPSupport {
+  def toSource(source: Source): Source = {
+    return source.asInstanceOf[Source]
+  }
 
-    public static Sender createSender(String name) {
-        return AMQPSender.create(name);
-    }
-
-    public static Receiver createReceiver(String name) {
-        return AMQPReceiver.create(name);
-    }
+  def toTarget(target: Target): Target = {
+    return target.asInstanceOf[Target]
+  }
 }
