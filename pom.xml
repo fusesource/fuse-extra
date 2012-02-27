@@ -74,8 +74,8 @@
     <mvnplugins-version>1.14</mvnplugins-version>
     <hadoop-version>1.0.0</hadoop-version>
     <activemq-version>5.5.1-fuse-02-02</activemq-version>
-    <hawtbuf-version>1.8</hawtbuf-version>
-    <hawtdispatch-version>1.8</hawtdispatch-version>
+    <hawtbuf-version>1.9</hawtbuf-version>
+    <hawtdispatch-version>1.9</hawtdispatch-version>
     <log4j-version>1.2.16</log4j-version>
     <osgi-version>4.2.0</osgi-version>
     <jackson-version>1.9.2</jackson-version>
