@@ -144,6 +144,8 @@ class LevelDBStore extends ServiceSupport with BrokerServiceAware with Persisten
   @BeanProperty
   var indexCompression: String = "snappy"
   @BeanProperty
+  var logCompression: String = "none"
+  @BeanProperty
   var indexCacheSize: Long = 1024 * 1024 * 256L
   @BeanProperty
   var flushDelay = 1000*5
@@ -177,9 +179,12 @@ class LevelDBStore extends ServiceSupport with BrokerServiceAware with Persisten
 
   var lock_file: LockFile = _
 
+  var snappyCompressLogs = false
+
   def doStart: Unit = {
     import FileSupport._
 
+    snappyCompressLogs = logCompression.toLowerCase == "snappy" && Snappy != null
     debug("starting")
     if ( lock_file==null ) {
       lock_file = new LockFile(directory / "lock", true)

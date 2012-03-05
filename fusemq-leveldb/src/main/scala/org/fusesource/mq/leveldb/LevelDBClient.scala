@@ -966,7 +966,12 @@ class LevelDBClient(store: LevelDBStore) {
 
     // Lets decode
     buffer.map{ x =>
-      store.wireFormat.unmarshal(new ByteSequence(x.data, x.offset, x.length)).asInstanceOf[Message]
+      var data = if( store.snappyCompressLogs ) {
+        Snappy.uncompress(x)
+      } else {
+        x
+      }
+      store.wireFormat.unmarshal(new ByteSequence(data.data, data.offset, data.length)).asInstanceOf[Message]
     }.getOrElse(null)
   }
 

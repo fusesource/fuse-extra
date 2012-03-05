@@ -32,7 +32,7 @@ import util.TimeMetric
 import java.util.HashMap
 import collection.mutable.{HashSet, ListBuffer}
 
-case class MessageRecord(id:MessageId, data:Buffer, syncNeeded:Boolean=false) {
+case class MessageRecord(id:MessageId, data:Buffer, syncNeeded:Boolean) {
   var locator:(Long, Int) = _
 }
 
@@ -222,7 +222,11 @@ class DelayableUOW(val manager:DBManager) extends BaseRetained {
     val messageRecord = id.getDataLocator match {
       case null =>
         var packet = manager.parent.wireFormat.marshal(message)
-        val record = MessageRecord(id, new Buffer(packet.data, packet.offset, packet.length), message.isResponseRequired)
+        var data = new Buffer(packet.data, packet.offset, packet.length)
+        if( manager.snappyCompressLogs ) {
+          data = Snappy.compress(data)
+        }
+        val record = MessageRecord(id, data, message.isResponseRequired)
         id.setDataLocator(record)
         record
       case record:MessageRecord =>
@@ -501,6 +505,7 @@ class DBManager(val parent:LevelDBStore) {
   }
 
   var started = false
+  def snappyCompressLogs = parent.snappyCompressLogs
 
   def start = {
     asyncCapacityRemaining.set(parent.asyncBufferSize)
