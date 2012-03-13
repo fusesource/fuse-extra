@@ -50,7 +50,7 @@
     <dependency>
       <groupId>org.fusesource.mqtt-client</groupId>
       <artifactId>mqtt-client</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <version>1.0</version>
     </dependency>
 
     <!-- Scala Support -->
@@ -199,6 +199,28 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.fusesource.mvnplugins</groupId>
+        <artifactId>maven-uberize-plugin</artifactId>
+        <version>${mvnplugins-version}</version>
+        <executions>
+          <execution>
+            <id>all</id>
+            <phase>package</phase>
+            <goals><goal>uberize</goal></goals>
+          </execution>
+        </executions>
+        <configuration>
+          <uberArtifactAttached>true</uberArtifactAttached>
+          <uberClassifierName>uber</uberClassifierName>
+          <artifactSet>
+            <includes>
+              <include>org.fusesource.mqtt-client:mqtt-client</include>
+            </includes>
+          </artifactSet>            
+        </configuration>
       </plugin>
 
     </plugins>
