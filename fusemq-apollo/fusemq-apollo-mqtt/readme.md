@@ -23,8 +23,8 @@ the your Apollo's `lib` directory then restart your broker.
 
 You can use the simple MQTT listener and publisher command line apps included 
 in the mqtt-client library.  To use, download the 
-[mqtt-client-1.0-uber.jar][client_release_jar] then in one command line 
-window, run a MQTT message listener on the `test` on your local apollo broker
+[mqtt-client-1.0-uber.jar][client_release_jar] then in a command line 
+window, run a MQTT message listener on the `test` topic on your local apollo broker
 by running:
 
 	java -cp mqtt-client-1.0-uber.jar org.fusesource.mqtt.cli.Listener -h tcp://localhost:61613 -u admin -p password  -t test
