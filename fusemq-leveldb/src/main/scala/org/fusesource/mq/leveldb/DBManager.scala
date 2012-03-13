@@ -215,9 +215,16 @@ class DelayableUOW(val manager:DBManager) extends BaseRetained {
     subAcks += SubAckRecord(sub.subKey, sub.lastAckPosition)
   }
 
-  def enqueue(queueKey:Long, queueSeq:Long, message:Message)  = {
+  def enqueue(queueKey:Long, queueSeq:Long, message:Message, delay:Boolean)  = {
+
+    if(delay) {
+      manager.uowEnqueueDelayReqested += 1
+    } else {
+      manager.uowEnqueueNodelayReqested += 1
+    }
 
     val id = message.getMessageId
+
 
     val messageRecord = id.getDataLocator match {
       case null =>
@@ -240,9 +247,8 @@ class DelayableUOW(val manager:DBManager) extends BaseRetained {
     id.setEntryLocator((queueKey, queueSeq))
 
     val a = this.synchronized {
-      // Need to figure out a better way for the the broker to hint when
-      // a store should be delayed or not.
-      disableDelay = true // message.isResponseRequired
+      if( !delay )
+        disableDelay = true
 
       val action = getAction(entry.id)
       action.messageRecord = messageRecord
@@ -340,6 +346,8 @@ class DBManager(val parent:LevelDBStore) {
 
   def createUow() = new DelayableUOW(this)
 
+  var uowEnqueueDelayReqested = 0L
+  var uowEnqueueNodelayReqested = 0L
   var uowClosedCounter = 0L
   var uowCanceledCounter = 0L
   var uowStoringCounter = 0L
@@ -452,6 +460,9 @@ class DBManager(val parent:LevelDBStore) {
     dispatchQueue.assertExecuting()
     if( uow!=null && !uow.canceled && uow.state.stage < UowFlushQueued.stage ) {
       uow.state = UowFlushQueued
+      if(uow.delayable) {
+        System.out.println("uow flusing.. was delayed: %,.2f ms".format((System.nanoTime() - uow.disposed_at)/1000000.0))
+      }
       flush_queue.put (uow.uowId, uow)
       flushSource.merge(1)
     }
@@ -544,16 +555,18 @@ class DBManager(val parent:LevelDBStore) {
         "uow complete: %,.3f ms, " +
         "index write: %,.3f ms, " +
         "log write: %,.3f ms, log flush: %,.3f ms, log rotate: %,.3f ms"+
-        "add msg: %,.3f ms, add enqueue: %,.3f ms, "
+        "add msg: %,.3f ms, add enqueue: %,.3f ms, " +
+        "uowEnqueueDelayReqested: %d, uowEnqueueNodelayReqested: %d "
         ).format(
           uowClosedCounter, uowCanceledCounter, uowStoringCounter, uowStoredCounter,
           uow_complete_latency.reset,
         client.max_index_write_latency.reset,
           client.log.max_log_write_latency.reset, client.log.max_log_flush_latency.reset, client.log.max_log_rotate_latency.reset,
-        client.max_write_message_latency.reset, client.max_write_enqueue_latency.reset
+        client.max_write_message_latency.reset, client.max_write_enqueue_latency.reset,
+        uowEnqueueDelayReqested, uowEnqueueNodelayReqested
       ))
       uowClosedCounter = 0
-      uowCanceledCounter = 0
+//      uowCanceledCounter = 0
       uowStoringCounter = 0
       uowStoredCounter = 0
       monitorStats

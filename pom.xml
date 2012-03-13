@@ -18,8 +18,7 @@
 
 -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
   
@@ -31,7 +30,7 @@
 
   <groupId>org.fusesource.fuse-extra</groupId>
   <artifactId>fuse-extra-project</artifactId>
-  <version>99-master-SNAPSHOT</version>
+  <version>1.0.x-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>${project.artifactId}</name>
@@ -79,7 +78,7 @@
     <osgi-version>4.2.0</osgi-version>
     <jackson-version>1.9.2</jackson-version>
 
-    <activemq-version>5.5.1-fuse-02-02</activemq-version>
+    <activemq-version>5.6-SNAPSHOT</activemq-version>
     <apollo-version>1.1</apollo-version>
   </properties>
 

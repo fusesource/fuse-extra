@@ -17,9 +17,6 @@
 package org.fusesource.mq.leveldb
 
 import org.apache.hadoop.fs.FileUtil
-import org.fusesource.mq.leveldb.util.FileSupport
-import org.junit.AfterClass
-import org.junit.BeforeClass
 import java.io.File
 import java.util.concurrent.TimeUnit
 
