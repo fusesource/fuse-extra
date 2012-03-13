@@ -2,8 +2,13 @@
 
 ## Overview
 
-This plugin adds MQTT v3.1 protocol support to Apache Apollo 
-message brokers.    
+This plugin adds MQTT v3.1 protocol support to Apache Apollo message brokers.
+All MQTT v3.1 feature are suport like:
+
+* QoS 0, 1, and 2
+* Retained messages
+* Clean and non-clean sessions
+* Client authentication
 
 ## Prequisites
 
