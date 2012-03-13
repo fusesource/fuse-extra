@@ -24,7 +24,7 @@ How is the LevelDB Store better than the default KahaDB store:
 
 ## How to Use
 
-Download and copy the lastest [fusemq-leveldb-snapshot-uber.jar][snapshot_jar] your broker's `lib` directroy.  Then update the broker
+Download and copy the lastest [fusemq-leveldb-1.0-uber.jar][release_jar] to your broker's `lib` directroy.  Then update the broker
 configuration file and change `persistenceAdapter` elements settings so that it uses the LevelDB store using the
 following spring XML configuration example: 
 
@@ -36,6 +36,7 @@ following spring XML configuration example:
       </bean>
     </persistenceAdapter>
 
+[release_jar]: http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/fuse-extra/fusemq-leveldb/1.0/fusemq-leveldb-1.0-uber.jar
 [snapshot_jar]: http://repo.fusesource.com/nexus/service/local/artifact/maven/redirect?r=snapshots&g=org.fusesource.fuse-extra&a=fusemq-leveldb&v=99-master-SNAPSHOT&c=uber
 
 ### Configuration / Property Reference
