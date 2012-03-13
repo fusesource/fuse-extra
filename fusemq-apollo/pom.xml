@@ -20,7 +20,7 @@
   <parent>
     <groupId>org.fusesource.fuse-extra</groupId>
     <artifactId>fuse-extra-project</artifactId>
-    <version>99-master-SNAPSHOT</version>
+    <version>1.0</version>
     <relativePath>..</relativePath>
   </parent>
     

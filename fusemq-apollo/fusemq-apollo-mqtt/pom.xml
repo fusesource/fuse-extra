@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.fusesource.fuse-extra</groupId>
     <artifactId>fuse-scala</artifactId>
-    <version>99-master-SNAPSHOT</version>
+    <version>1.0</version>
     <relativePath>../../fuse-scala</relativePath>
   </parent>
 
