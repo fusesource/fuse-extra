@@ -257,10 +257,10 @@ class LevelDBStore extends ServiceSupport with BrokerServiceAware with Persisten
   
   case class Transaction(id:TransactionId) {
     val commitActions = ListBuffer[TransactionAction]() 
-    def add(store:LevelDBMessageStore, message: Message) = {
+    def add(store:LevelDBMessageStore, message: Message, delay:Boolean) = {
       commitActions += new TransactionAction() {
         def apply(uow:DelayableUOW) = {
-          store.doAdd(uow, message)
+          store.doAdd(uow, message, delay)
         }
       }
     }
@@ -389,23 +389,26 @@ class LevelDBStore extends ServiceSupport with BrokerServiceAware with Persisten
 
     lastSeq.set(db.getLastQueueEntrySeq(key))
 
-    def doAdd(uow: DelayableUOW, message: Message): CountDownFuture = {
-      uow.enqueue(key, lastSeq.incrementAndGet, message)
+    def doAdd(uow: DelayableUOW, message: Message, delay:Boolean): CountDownFuture = {
+      uow.enqueue(key, lastSeq.incrementAndGet, message, delay)
     }
 
-    override def asyncAddQueueMessage(context: ConnectionContext, message: Message): Future[AnyRef] = {
+
+    override def asyncAddQueueMessage(context: ConnectionContext, message: Message) = asyncAddQueueMessage(context, message, false)
+    override def asyncAddQueueMessage(context: ConnectionContext, message: Message, delay: Boolean): Future[AnyRef] = {
       if(  message.getTransactionId!=null ) {
-        transaction(message.getTransactionId).add(this, message)
+        transaction(message.getTransactionId).add(this, message, delay)
         DONE
       } else {
         withUow { uow=>
-          doAdd(uow, message)
+          doAdd(uow, message, delay)
         }
       }
     }
 
-    def addMessage(context: ConnectionContext, message: Message): Unit = {
-      waitOn(asyncAddQueueMessage(context, message))
+    override def addMessage(context: ConnectionContext, message: Message) = addMessage(context, message, false)
+    override def addMessage(context: ConnectionContext, message: Message, delay: Boolean): Unit = {
+      waitOn(asyncAddQueueMessage(context, message, delay))
     }
 
     def doRemove(uow: DelayableUOW, id: MessageId): CountDownFuture = {
