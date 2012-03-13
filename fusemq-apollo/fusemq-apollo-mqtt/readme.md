@@ -14,7 +14,7 @@ All MQTT v3.1 feature are supported:
 
 An installation of:
 
-  * [Apollo 1.1](http://www.apache.org/dyn/closer.cgi?path=activemq/activemq-apollo/1.1)
+  * [Apollo 1.1](http://activemq.apache.org/apollo)
 
 ## Installing
 
