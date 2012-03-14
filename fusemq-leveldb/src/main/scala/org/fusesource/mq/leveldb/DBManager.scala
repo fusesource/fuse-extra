@@ -460,9 +460,6 @@ class DBManager(val parent:LevelDBStore) {
     dispatchQueue.assertExecuting()
     if( uow!=null && !uow.canceled && uow.state.stage < UowFlushQueued.stage ) {
       uow.state = UowFlushQueued
-      if(uow.delayable) {
-        System.out.println("uow flusing.. was delayed: %,.2f ms".format((System.nanoTime() - uow.disposed_at)/1000000.0))
-      }
       flush_queue.put (uow.uowId, uow)
       flushSource.merge(1)
     }

@@ -65,7 +65,7 @@ class EnqueueRateScenariosTest extends TestCase {
     return store
   }
 
-  def benchmark(scenario:ActiveMQScenario, warmup:Int, samples_count:Int) = {
+  def collect_benchmark(scenario:ActiveMQScenario, warmup:Int, samples_count:Int) = {
     val (cancels, optimized, unoptimized) = scenario.with_load {
       println("Warming up for %d seconds...".format(warmup))
       Thread.sleep(warmup*1000)
@@ -103,7 +103,7 @@ class EnqueueRateScenariosTest extends TestCase {
     (producer_stats, consumer_stats, cancels*1.0/samples_count, optimized*1.0/samples_count, unoptimized*1.0/samples_count)
   }
 
-  def benchmark(name:String, warmup:Int=3, samples_count:Int=15, async_send:Boolean=true)(setup:(ActiveMQScenario)=>Unit) {
+  def benchmark(name:String, warmup:Int=3, samples_count:Int=15, async_send:Boolean=true)(setup:(ActiveMQScenario)=>Unit) = {
     println("Benchmarking: "+name)
     var options: String = "?jms.watchTopicAdvisories=false&jms.useAsyncSend="+async_send
     val url = broker.getTransportConnectors.get(0).getConnectUri + options
@@ -115,7 +115,7 @@ class EnqueueRateScenariosTest extends TestCase {
     scenario.message_size = 1024 * 3
 
     setup(scenario)
-    val (producer_stats, consumer_stats, cancels, optimized, unoptimized) = benchmark(scenario, warmup, samples_count)
+    val (producer_stats, consumer_stats, cancels, optimized, unoptimized) = collect_benchmark(scenario, warmup, samples_count)
 
     println("%s: producer avg msg/sec: %,.2f, stddev: %,.2f".format(name, producer_stats.getMean, producer_stats.getStandardDeviation))
     println("%s: consumer avg msg/sec: %,.2f, stddev: %,.2f".format(name, consumer_stats.getMean, consumer_stats.getStandardDeviation))
@@ -126,30 +126,42 @@ class EnqueueRateScenariosTest extends TestCase {
     (producer_stats, consumer_stats, cancels, optimized, unoptimized)
   }
 
-  def testRates = {
-    val both_connected_baseline = benchmark("both_connected_baseline") { scenario=>
+  def testHighCancelRatio = {
+    val (producer_stats, consumer_stats, cancels, optimized, unoptimized) = benchmark("both_connected_baseline") { scenario=>
       scenario.producers = 1
       scenario.consumers = 1
     }
-//    // warm up longer so we get the benchmark the effect of when the queue is large..
-//    val producer_connected_baseline = benchmark("producer_connected_baseline", 30) { scenario=>
-//      scenario.producers = 1
-//      scenario.consumers = 0
-//    }
-//    val consumer_connected_baseline = benchmark("consumer_connected_baseline") { scenario=>
-//      scenario.producers = 0
-//      scenario.consumers = 1
-//    }
-//
-//    // Fill up the queue with messages.. for the benefit of the next benchmark..
-//    val fill_the_queue = benchmark("fill_the_queue", 30) { scenario=>
-//      scenario.producers = 1
-//      scenario.consumers = 0
-//    }
-//    val both_connected_on_deep_queue = benchmark("both_connected_on_deep_queue") { scenario=>
-//      scenario.producers = 1
-//      scenario.consumers = 1
-//    }
+    val cancel_ratio = cancels / producer_stats.getMean
+    assertTrue("Expecting more than 80%% of the enqueues get canceled. But only %.2f%% was canceled".format(cancel_ratio*100), cancel_ratio > .80)
+  }
+
+  def testDecoupledProducerRate = {
+
+    // Fill up the queue with messages.. for the benefit of the next benchmark..
+    val from_1_to_0 = benchmark("from_1_to_0", 60) { scenario=>
+      scenario.producers = 1
+      scenario.consumers = 0
+    }
+    val from_1_to_10 = benchmark("from_1_to_10") { scenario=>
+      scenario.producers = 1
+      scenario.consumers = 10
+    }
+    val from_1_to_1 = benchmark("from_1_to_1") { scenario=>
+      scenario.producers = 1
+      scenario.consumers = 1
+    }
+
+    var percent_diff0 = (1.0 - (from_1_to_0._1.getMean / from_1_to_1._1.getMean)).abs * 100
+    var percent_diff1 = (1.0 - (from_1_to_1._1.getMean / from_1_to_10._1.getMean)).abs * 100
+
+    var msg0 = "The 0 vs 1 consumer scenario producer rate was within %.2f%%".format(percent_diff0)
+    var msg1 = "The 1 vs 10 consumer scenario producer rate was within %.2f%%".format(percent_diff1)
+
+    println(msg0)
+    println(msg1)
+
+    assertTrue(msg0, percent_diff0 <= 60)
+    assertTrue(msg1, percent_diff1 <= 20)
   }
 
 }
