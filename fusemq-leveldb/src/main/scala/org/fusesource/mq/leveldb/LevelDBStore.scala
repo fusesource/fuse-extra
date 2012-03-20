@@ -283,21 +283,25 @@ class LevelDBStore extends ServiceSupport with BrokerServiceAware with Persisten
   def transaction(txid: TransactionId) = transactions.getOrElseUpdate(txid, Transaction(txid))
   
   def commit(txid: TransactionId, wasPrepared: Boolean, preCommit: Runnable, postCommit: Runnable) = {
+    preCommit.run()
     transactions.remove(txid) match {
-      case None=> throw new IOException("The transaction does not exist")
+      case None=>
+        println("The transaction does not exist")
+        postCommit.run()
       case Some(tx)=>
-        waitOn(withUow { uow =>
+        withUow { uow =>
           for( action <- tx.commitActions ) {
             action(uow)
           }
-          uow.countDownFuture
-        })
+          uow.addCompleteListener( postCommit.run() )
+        }
     }
   }
 
   def rollback(txid: TransactionId) = {
     transactions.remove(txid) match {
-      case None=> throw new IOException("The transaction does not exist")
+      case None=>
+        println("The transaction does not exist")
       case Some(tx)=>
     }
   }

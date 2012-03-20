@@ -31,6 +31,7 @@ import org.fusesource.mq.leveldb.record.{SubscriptionRecord, CollectionRecord}
 import util.TimeMetric
 import java.util.HashMap
 import collection.mutable.{HashSet, ListBuffer}
+import org.apache.activemq.thread.DefaultThreadPools
 
 case class MessageRecord(id:MessageId, data:Buffer, syncNeeded:Boolean) {
   var locator:(Long, Int) = _
@@ -215,9 +216,9 @@ class DelayableUOW(val manager:DBManager) extends BaseRetained {
     subAcks += SubAckRecord(sub.subKey, sub.lastAckPosition)
   }
 
-  def enqueue(queueKey:Long, queueSeq:Long, message:Message, delay:Boolean)  = {
-
-    if(delay) {
+  def enqueue(queueKey:Long, queueSeq:Long, message:Message, delay_enqueue:Boolean)  = {
+    var delay = delay_enqueue && message.getTransactionId==null
+    if(delay ) {
       manager.uowEnqueueDelayReqested += 1
     } else {
       manager.uowEnqueueNodelayReqested += 1
@@ -280,6 +281,11 @@ class DelayableUOW(val manager:DBManager) extends BaseRetained {
     }
   }
 
+  var complete_listeners = ListBuffer[()=>Unit]()
+  def addCompleteListener(func: =>Unit) = {
+    complete_listeners.append( func _ )
+  }
+
   var asyncCapacityUsed = 0L
   var disposed_at = 0L
 
@@ -291,6 +297,9 @@ class DelayableUOW(val manager:DBManager) extends BaseRetained {
       if( manager.asyncCapacityRemaining.addAndGet(-s) > 0 ) {
         asyncCapacityUsed = s
         countDownFuture.countDown
+        DefaultThreadPools.getDefaultTaskRunnerFactory.execute(^{
+          complete_listeners.foreach(_())
+        })
       } else {
         manager.asyncCapacityRemaining.addAndGet(s)
       }
@@ -310,6 +319,9 @@ class DelayableUOW(val manager:DBManager) extends BaseRetained {
       } else {
         manager.uow_complete_latency.add(System.nanoTime() - disposed_at)
         countDownFuture.countDown
+        DefaultThreadPools.getDefaultTaskRunnerFactory.execute(^{
+          complete_listeners.foreach(_())
+        })
       }
 
       for( (id, action) <- actions ) {

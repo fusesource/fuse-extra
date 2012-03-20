@@ -22,6 +22,7 @@ import org.apache.activemq.store._
 import java.io.File
 import junit.framework.Assert._
 import org.apache.commons.math.stat.descriptive.DescriptiveStatistics
+import region.policy.{PolicyEntry, PolicyMap}
 
 /**
  * <p>
@@ -34,10 +35,16 @@ class EnqueueRateScenariosTest extends TestCase {
   var broker: BrokerService = null
 
   override def setUp() {
+    import collection.JavaConversions._
     broker = new BrokerService
     broker.setDeleteAllMessagesOnStartup(true)
     broker.setPersistenceAdapter(createStore)
     broker.addConnector("tcp://0.0.0.0:0")
+//    val policies = new PolicyMap();
+//    val entry = new PolicyEntry
+//    entry.setQueue(">")
+//    policies.setPolicyEntries(List(entry))
+//    broker.setDestinationPolicy(policies)
     broker.start
     broker.waitUntilStarted()
   }
