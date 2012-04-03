@@ -33,7 +33,7 @@
   <description>Fuse Extra :: AMQP Protocol Handler</description>
 
   <properties>
-    <apollo-version>1.1-SNAPSHOT</apollo-version>
+    <apollo-version>99-trunk-SNAPSHOT</apollo-version>
   </properties>
 
   <dependencies>

@@ -37,6 +37,7 @@
 
 
   <properties>
+    <activemq-version>5.6-SNAPSHOT</activemq-version>
   </properties>
 
   <dependencies>

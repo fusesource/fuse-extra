@@ -166,7 +166,7 @@ class MqttProtocolHandler extends ProtocolHandler {
 
       heart_beat_monitor.stop
       if( !connection.stopped ) {
-        connection.stop()
+        connection.stop(NOOP)
       }
       trace("mqtt protocol resources released")
     }
@@ -253,10 +253,10 @@ class MqttProtocolHandler extends ProtocolHandler {
         // TODO: if there are too many open connections we should just close the connection
         // without waiting for the error to get sent to the client.
         queue.after(die_delay, TimeUnit.MILLISECONDS) {
-          connection.stop()
+          connection.stop(NOOP)
         }
       } else {
-        connection.stop()
+        connection.stop(NOOP)
       }
     }
     throw new Break()
