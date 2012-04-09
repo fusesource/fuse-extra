@@ -399,7 +399,7 @@ class LevelDBStore extends ServiceSupport with BrokerServiceAware with Persisten
 
 
     override def asyncAddQueueMessage(context: ConnectionContext, message: Message) = asyncAddQueueMessage(context, message, false)
-    override def asyncAddQueueMessage(context: ConnectionContext, message: Message, delay: Boolean): Future[AnyRef] = {
+    def asyncAddQueueMessage(context: ConnectionContext, message: Message, delay: Boolean): Future[AnyRef] = {
       if(  message.getTransactionId!=null ) {
         transaction(message.getTransactionId).add(this, message, delay)
         DONE
@@ -411,7 +411,7 @@ class LevelDBStore extends ServiceSupport with BrokerServiceAware with Persisten
     }
 
     override def addMessage(context: ConnectionContext, message: Message) = addMessage(context, message, false)
-    override def addMessage(context: ConnectionContext, message: Message, delay: Boolean): Unit = {
+    def addMessage(context: ConnectionContext, message: Message, delay: Boolean): Unit = {
       waitOn(asyncAddQueueMessage(context, message, delay))
     }
 
