@@ -322,6 +322,37 @@
           </artifactSet>            
         </configuration>
       </plugin>
+        <plugin>
+            <artifactId>maven-jar-plugin</artifactId>
+            <configuration>
+                <archive>
+                    <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+                </archive>
+            </configuration>
+        </plugin>
+        <plugin>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>maven-bundle-plugin</artifactId>
+            <configuration>
+                <instructions>
+                    <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+                    <Fragment-Host>org.apache.activemq.activemq-core</Fragment-Host>
+                    <Export-Package>
+                        org.fusesource.mq.leveldb*;version=${project.version};-noimport:=;-split-package:=merge-last,
+                    </Export-Package>
+                </instructions>
+            </configuration>
+            <executions>
+                <execution>
+                    <id>bundle-manifest</id>
+                    <phase>process-classes</phase>
+                    <goals>
+                        <goal>manifest</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
