@@ -337,7 +337,7 @@
             <Embed-Dependency>*;inline=**;artifactId=
               hawtjni-runtime|hawtbuf|hawtbuf-proto|hawtdispatch|hawtdispatch-scala|scala-library|
               leveldb-api|leveldbjni|leveldbjni-osx|leveldbjni-linux32|leveldbjni-linux64|
-              hadoop-core|commons-configuration|jackson-mapper-asl|jackson-core-asl</Embed-Dependency>
+              hadoop-core|commons-configuration|jackson-mapper-asl|jackson-core-asl|commons-lang</Embed-Dependency>
             <Embed-Transitive>true</Embed-Transitive>
             <Import-Package>*;resolution:=optional</Import-Package>
           </instructions>
