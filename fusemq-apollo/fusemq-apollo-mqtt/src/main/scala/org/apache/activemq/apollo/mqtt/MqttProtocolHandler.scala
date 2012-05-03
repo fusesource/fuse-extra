@@ -23,7 +23,7 @@ import org.fusesource.hawtdispatch._
 
 import org.apache.activemq.apollo.broker._
 import java.lang.String
-import protocol.{ProtocolFilter, ProtocolHandler}
+import protocol.{ProtocolFilter2, ProtocolFilter, ProtocolHandler}
 import security.SecurityContext
 import org.apache.activemq.apollo.util._
 import java.util.concurrent.TimeUnit
@@ -95,10 +95,7 @@ class MqttProtocolHandler extends ProtocolHandler {
     destination_parser
   }
 
-  def protocol_filters = {
-    import collection.JavaConversions._
-    ProtocolFilter.create_filters(config.protocol_filters.toList, this)
-  }
+  var protocol_filters = List[ProtocolFilter2]()
 
   /////////////////////////////////////////////////////////////////////
   //
@@ -121,6 +118,9 @@ class MqttProtocolHandler extends ProtocolHandler {
     import OptionSupport._
     config.max_message_length.foreach( codec.setMaxMessageLength(_) )
 
+    import collection.JavaConversions._
+    protocol_filters = ProtocolFilter2.create_filters(config.protocol_filters.toList, this)
+
     connection.transport match {
       case t:SslTransport=>
         security_context.certificates = Option(t.getPeerX509Certificates).getOrElse(Array[X509Certificate]())
@@ -131,15 +131,24 @@ class MqttProtocolHandler extends ProtocolHandler {
     security_context.connector_id = connection.connector.id
 
     connection_log = connection.connector.broker.connection_log
-    sink_manager = new SinkMux[Request]( connection.transport_sink.map { request=>
+    var filtering_sink:Sink[Request] = connection.transport_sink.map { request =>
       trace("sent: %s", request.message)
-      val frame = request.frame
       request.delivered = true
       if (request.id == 0 && request.ack != null) {
         request.ack(Consumed)
       }
-      frame
-    })
+      request.frame
+    }
+    if(!protocol_filters.isEmpty) {
+      filtering_sink = filtering_sink.flatMap {x=>
+        var cur = Option(x)
+        protocol_filters.foreach { filter =>
+          cur = cur.flatMap(filter.filter_outbound(_))
+        }
+        cur
+      }
+    }
+    sink_manager = new SinkMux[Request](filtering_sink)
     connection_sink = new OverflowSink(sink_manager.open());
     resume_read
   }
@@ -269,9 +278,24 @@ class MqttProtocolHandler extends ProtocolHandler {
   /////////////////////////////////////////////////////////////////////
   var command_handler: (AnyRef)=>Unit = connect_handler _
 
-  override def on_transport_command(command:AnyRef)= {
+  override def on_transport_command(command:AnyRef):Unit = {
     try {
-      command_handler(command)
+
+      var f = command
+      val frame = if(!protocol_filters.isEmpty) {
+        var cur = Option(f)
+        protocol_filters.foreach { filter =>
+          cur = cur.flatMap(filter.filter_inbound(_))
+        }
+        cur match {
+          case Some(f) => f
+          case None => return // dropping the frame.
+        }
+      } else {
+        f
+      }
+
+      command_handler(frame)
     }  catch {
       case e: Break =>
       case e:Exception =>
@@ -300,12 +324,7 @@ class MqttProtocolHandler extends ProtocolHandler {
     case s:MQTTProtocolCodec =>
       // this is passed on to us by the protocol discriminator
       // so we know which wire format is being used.
-    case frame:MQTTFrame=>
-
-      var command = frame
-      protocol_filters.foreach { filter =>
-        command = filter.filter(command)
-      }
+    case command:MQTTFrame=>
 
       command.messageType() match {
         case CONNECT.TYPE =>
@@ -587,7 +606,6 @@ case class MqttSession(host_state:HostState, client_id:UTF8Buffer, session_state
   var handler:Option[MqttProtocolHandler] = None
   var security_context:SecurityContext = _
   var clean_session = false
-  var protocol_filters = List[ProtocolFilter]()
   var connect_message:CONNECT = _
   var destination_parser = MqttProtocol.destination_parser
 
@@ -635,7 +653,6 @@ case class MqttSession(host_state:HostState, client_id:UTF8Buffer, session_state
     clean_session = h.connect_message.cleanSession()
     security_context = h.security_context
     h.command_handler = on_transport_command _
-    protocol_filters = h.protocol_filters
     destination_parser = h.destination_parser
     mqtt_consumer.consumer_sink.downstream = Some(h.sink_manager.open)
 
@@ -777,13 +794,8 @@ case class MqttSession(host_state:HostState, client_id:UTF8Buffer, session_state
   //
   /////////////////////////////////////////////////////////////////////
   def on_transport_command(command:AnyRef):Unit = command match {
-    case frame:MQTTFrame=>
+    case command:MQTTFrame=>
       
-      var command = frame
-      protocol_filters.foreach { filter =>
-        command = filter.filter(command)
-      }
-
       command.messageType() match {
 
         case PUBLISH.TYPE =>

@@ -46,7 +46,11 @@ class MqttProtocolFactory extends ProtocolFactory {
 class MqttProtocolCodecFactory extends ProtocolCodecFactory.Provider {
 
   def id = "mqtt"
-  def createProtocolCodec() = new MQTTProtocolCodec();
+  def createProtocolCodec() = {
+    val rc = new MQTTProtocolCodec()
+    rc.setBufferPools(Broker.buffer_pools)
+    rc
+  }
   def isIdentifiable() = true
 
   //
