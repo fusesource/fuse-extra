@@ -32,6 +32,15 @@ the your Apollo's `lib` directory then restart your broker.
 
 [snapshot_jar]: http://repo.fusesource.com/nexus/service/local/artifact/maven/redirect?r=snapshots&g=org.fusesource.fuse-extra&a=fusemq-apollo-mqtt&v=99-master-SNAPSHOT&c=uber
 
+## Installing on Apollo 1.3
+
+Download and copy the [fusemq-apollo-mqtt-1.1-uber.jar][release_1.1_jar] into 
+the your Apollo's `lib` directory then restart your broker.
+
+[release_1.1_jar]: http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/fuse-extra/fusemq-apollo-mqtt/1.1/fusemq-apollo-mqtt-1.1-uber.jar
+
+[snapshot_jar]: http://repo.fusesource.com/nexus/service/local/artifact/maven/redirect?r=snapshots&g=org.fusesource.fuse-extra&a=fusemq-apollo-mqtt&v=99-master-SNAPSHOT&c=uber
+
 ## Validating the Installation
 
 You can use the simple MQTT listener and publisher command line apps included 

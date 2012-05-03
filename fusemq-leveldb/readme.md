@@ -22,9 +22,9 @@ How is the LevelDB Store better than the default KahaDB store:
  * It exposes it's status via JMX for monitoring
  * Supports replication to get High Availablity 
 
-## How to Use
+## How to Use with FuseMB 5.5.1-fuse-02-02 and Newer
 
-Download and copy the lastest [fusemq-leveldb-1.0-uber.jar][release_jar] to your broker's `lib` directroy.  Then update the broker
+Download and copy the [fusemq-leveldb-1.1-uber.jar][uber_release_jar] file to your broker's `lib` directory.  Then update the broker
 configuration file and change `persistenceAdapter` elements settings so that it uses the LevelDB store using the
 following spring XML configuration example: 
 
@@ -36,8 +36,23 @@ following spring XML configuration example:
       </bean>
     </persistenceAdapter>
 
-[release_jar]: http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/fuse-extra/fusemq-leveldb/1.0/fusemq-leveldb-1.0-uber.jar
-[snapshot_jar]: http://repo.fusesource.com/nexus/service/local/artifact/maven/redirect?r=snapshots&g=org.fusesource.fuse-extra&a=fusemq-leveldb&v=99-master-SNAPSHOT&c=uber
+[uber_release_jar]: http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/fuse-extra/fusemq-leveldb/1.1/fusemq-leveldb-1.1-uber.jar
+[uber_snapshot_jar]: http://repo.fusesource.com/nexus/service/local/artifact/maven/redirect?r=snapshots&g=org.fusesource.fuse-extra&a=fusemq-leveldb&v=99-master-SNAPSHOT&c=uber
+
+## How to Use with ActiveMQ 5.6
+
+The ActiveMQ 5.6 comes with the version 1.0 installed at `${ATCTIVEMQ_HOME}/lib/optional/fusemq-leveldb-1.0.jar`.  It is recommend that you upgrade the 1.0
+version to 1.1 which fixes a race condition that can lead to NullPointerExceptions being raised.  First delete the `${ATCTIVEMQ_HOME}/lib/optional/fusemq-leveldb-1.0.jar`
+file, then download and copy the [fusemq-leveldb-1.1.jar][release_jar] file to your broker's `lib/optional` directory.  Then update the broker
+configuration file and change `persistenceAdapter` elements settings so that it uses the LevelDB store using the
+following spring XML configuration example: 
+
+    <persistenceAdapter>
+      <levelDB directory="${activemq.base}/data/leveldb" logSize="107374182"/>
+    </persistenceAdapter>
+
+[release_jar]: http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/fuse-extra/fusemq-leveldb/1.1/fusemq-leveldb-1.1.jar
+[snapshot_jar]: http://repo.fusesource.com/nexus/service/local/artifact/maven/redirect?r=snapshots&g=org.fusesource.fuse-extra&a=fusemq-leveldb&v=99-master-SNAPSHOT
 
 ### Configuration / Property Reference
 
@@ -50,6 +65,7 @@ following spring XML configuration example:
 ## Known Limitations
 
 * XA Transactions not supported yet
+* The store does not do any dup detection of messages.
 
 ## Built in High Availability Support
 
