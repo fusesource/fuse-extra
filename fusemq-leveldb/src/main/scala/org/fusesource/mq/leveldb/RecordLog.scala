@@ -172,8 +172,9 @@ case class RecordLog(directory: File, logSuffix:String) {
         // Directly write the data to the channel since it's large.
         val buffer = data.toByteBuffer
         val pos = append_offset+LOG_HEADER_SIZE
-        flushed_offset.addAndGet(buffer.remaining)
+        val remaining = buffer.remaining
         channel.write(buffer, pos)
+        flushed_offset.addAndGet(remaining)
         if( buffer.hasRemaining ) {
           throw new IOException("Short write")
         }
@@ -193,9 +194,10 @@ case class RecordLog(directory: File, logSuffix:String) {
     def flush = max_log_flush_latency { this.synchronized {
       if( write_buffer.position() > 0 ) {
         val buffer = write_buffer.toBuffer.toByteBuffer
-        val pos = append_offset-buffer.remaining
-        flushed_offset.addAndGet(buffer.remaining)
+        val remaining = buffer.remaining
+        val pos = append_offset-remaining
         channel.write(buffer, pos)
+        flushed_offset.addAndGet(remaining)
         if( buffer.hasRemaining ) {
           throw new IOException("Short write")
         }
