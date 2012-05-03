@@ -16,6 +16,8 @@ An installation of:
 
   * [Apollo](http://activemq.apache.org/apollo) 1.1 or 1.2
 
+[snapshot_jar]: http://repo.fusesource.com/nexus/service/local/artifact/maven/redirect?r=snapshots&g=org.fusesource.fuse-extra&a=fusemq-apollo-mqtt&v=99-master-SNAPSHOT&c=uber
+
 ## Installing on Apollo 1.1
 
 Download and copy the [fusemq-apollo-mqtt-1.0-uber.jar][release_1.0_jar] into 
@@ -30,22 +32,18 @@ the your Apollo's `lib` directory then restart your broker.
 
 [release_1.1_jar]: http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/fuse-extra/fusemq-apollo-mqtt/1.1/fusemq-apollo-mqtt-1.1-uber.jar
 
-[snapshot_jar]: http://repo.fusesource.com/nexus/service/local/artifact/maven/redirect?r=snapshots&g=org.fusesource.fuse-extra&a=fusemq-apollo-mqtt&v=99-master-SNAPSHOT&c=uber
-
 ## Installing on Apollo 1.3
 
-Download and copy the [fusemq-apollo-mqtt-1.1-uber.jar][release_1.1_jar] into 
+Download and copy the [fusemq-apollo-mqtt-1.2-uber.jar][release_1.2_jar] into 
 the your Apollo's `lib` directory then restart your broker.
 
-[release_1.1_jar]: http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/fuse-extra/fusemq-apollo-mqtt/1.1/fusemq-apollo-mqtt-1.1-uber.jar
-
-[snapshot_jar]: http://repo.fusesource.com/nexus/service/local/artifact/maven/redirect?r=snapshots&g=org.fusesource.fuse-extra&a=fusemq-apollo-mqtt&v=99-master-SNAPSHOT&c=uber
+[release_1.2_jar]: http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/fuse-extra/fusemq-apollo-mqtt/1.2/fusemq-apollo-mqtt-1.2-uber.jar
 
 ## Validating the Installation
 
 You can use the simple MQTT listener and publisher command line apps included 
 in the mqtt-client library.  To use, download the 
-[mqtt-client-1.1-uber.jar][client_release_jar] then in a command line 
+[mqtt-client-1.2-uber.jar][client_release_jar] then in a command line 
 window, run a MQTT message listener on the `test` topic on your local apollo broker
 by running:
 
@@ -58,4 +56,4 @@ to the `test` topic by running:
 
 Your listener's command line process should then print to the screen the `hello` message.
 
-[client_release_jar]: http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/fuse-extra/fusemq-apollo-mqtt/1.1/fusemq-apollo-mqtt-1.1-uber.jar
+[client_release_jar]: http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/fuse-extra/fusemq-apollo-mqtt/1.2/fusemq-apollo-mqtt-1.2-uber.jar

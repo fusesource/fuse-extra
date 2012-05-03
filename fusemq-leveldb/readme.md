@@ -24,7 +24,7 @@ How is the LevelDB Store better than the default KahaDB store:
 
 ## How to Use with FuseMB 5.5.1-fuse-02-02 and Newer
 
-Download and copy the [fusemq-leveldb-1.1-uber.jar][uber_release_jar] file to your broker's `lib` directory.  Then update the broker
+Download and copy the [fusemq-leveldb-1.2-uber.jar][uber_release_jar] file to your broker's `lib` directory.  Then update the broker
 configuration file and change `persistenceAdapter` elements settings so that it uses the LevelDB store using the
 following spring XML configuration example: 
 
@@ -36,14 +36,14 @@ following spring XML configuration example:
       </bean>
     </persistenceAdapter>
 
-[uber_release_jar]: http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/fuse-extra/fusemq-leveldb/1.1/fusemq-leveldb-1.1-uber.jar
+[uber_release_jar]: http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/fuse-extra/fusemq-leveldb/1.2/fusemq-leveldb-1.2-uber.jar
 [uber_snapshot_jar]: http://repo.fusesource.com/nexus/service/local/artifact/maven/redirect?r=snapshots&g=org.fusesource.fuse-extra&a=fusemq-leveldb&v=99-master-SNAPSHOT&c=uber
 
 ## How to Use with ActiveMQ 5.6
 
-The ActiveMQ 5.6 comes with the version 1.0 installed at `${ATCTIVEMQ_HOME}/lib/optional/fusemq-leveldb-1.0.jar`.  It is recommend that you upgrade the 1.0
-version to 1.1 which fixes a race condition that can lead to NullPointerExceptions being raised.  First delete the `${ATCTIVEMQ_HOME}/lib/optional/fusemq-leveldb-1.0.jar`
-file, then download and copy the [fusemq-leveldb-1.1.jar][release_jar] file to your broker's `lib/optional` directory.  Then update the broker
+The ActiveMQ 5.6 comes with the version 1.1 installed at `${ATCTIVEMQ_HOME}/lib/optional/fusemq-leveldb-1.1.jar`.  It is recommend that you upgrade the 1.1
+version to 1.2 which fixes a race condition that can lead to NullPointerExceptions being raised.  First delete the `${ATCTIVEMQ_HOME}/lib/optional/fusemq-leveldb-1.1.jar`
+file, then download and copy the [fusemq-leveldb-1.2.jar][release_jar] file to your broker's `lib/optional` directory.  Then update the broker
 configuration file and change `persistenceAdapter` elements settings so that it uses the LevelDB store using the
 following spring XML configuration example: 
 
@@ -51,7 +51,7 @@ following spring XML configuration example:
       <levelDB directory="${activemq.base}/data/leveldb" logSize="107374182"/>
     </persistenceAdapter>
 
-[release_jar]: http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/fuse-extra/fusemq-leveldb/1.1/fusemq-leveldb-1.1.jar
+[release_jar]: http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/fuse-extra/fusemq-leveldb/1.2/fusemq-leveldb-1.2.jar
 [snapshot_jar]: http://repo.fusesource.com/nexus/service/local/artifact/maven/redirect?r=snapshots&g=org.fusesource.fuse-extra&a=fusemq-leveldb&v=99-master-SNAPSHOT
 
 ### Configuration / Property Reference
