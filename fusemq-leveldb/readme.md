@@ -13,14 +13,19 @@ How is the LevelDB Store better than the default KahaDB store:
 
  * It maitains fewer index entries per message than KahaDB which means it has a higher persistent throughput.
  * Faster recovery when a broker restarts
- * Since the broker tends to write and read queue entries sequencially, the LevelDB based index provide a much better performance than the B-Tree based indexes of KahaDB which increases throughput.
- * Unlike the KahaDB indexes, the LevelDB indexes support concurrent read acces which further improves read throughput.
+ * Since the broker tends to write and read queue entries sequentially, the LevelDB based index provide a much better performance than the B-Tree based indexes of KahaDB which increases throughput.
+ * Unlike the KahaDB indexes, the LevelDB indexes support concurrent read access which further improves read throughput.
  * Pauseless data log file garbage collection cycles.
  * It uses fewer read IO operations to load stored messages.
  * If a message is copied to multiple queues (Typically happens if your using virtual topics with multiple
    consumers), then LevelDB will only journal the payload of the message once.  KahaDB will journal it multiple times.
  * It exposes it's status via JMX for monitoring
- * Supports replication to get High Availablity 
+ * Supports replication to get High Availability
+ 
+See the following chart to get an idea on how much better you can expect the LevelDB store to perform vs the KahaDB store:
+
+![kahadb-vs-leveldb.png ](https://raw.github.com/fusesource/fuse-extra/master/fusemq-leveldb/kahadb-vs-leveldb.png)
+
 
 ## How to Use with FuseMB 5.5.1-fuse-02-02 and Newer
 
