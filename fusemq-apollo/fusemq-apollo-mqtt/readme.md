@@ -47,13 +47,13 @@ in the mqtt-client library.  To use, download the
 window, run a MQTT message listener on the `test` topic on your local apollo broker
 by running:
 
-	java -cp mqtt-client-1.1-uber.jar org.fusesource.mqtt.cli.Listener -h tcp://localhost:61613 -u admin -p password  -t test
+	java -cp mqtt-client-1.2-uber.jar org.fusesource.mqtt.cli.Listener -h tcp://localhost:61613 -u admin -p password  -t test
 
 Then in a seperate command line window then run a publisher to send a `hello` message
 to the `test` topic by running:
 
-	java -cp mqtt-client-1.1-uber.jar org.fusesource.mqtt.cli.Publisher -h tcp://localhost:61613 -u admin -p password  -t test -m hello
+	java -cp mqtt-client-1.2-uber.jar org.fusesource.mqtt.cli.Publisher -h tcp://localhost:61613 -u admin -p password  -t test -m hello
 
 Your listener's command line process should then print to the screen the `hello` message.
 
-[client_release_jar]: http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/fuse-extra/fusemq-apollo-mqtt/1.2/fusemq-apollo-mqtt-1.2-uber.jar
+[client_release_jar]: http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/mqtt-client/mqtt-client/1.2/mqtt-client-1.2-uber.jar
