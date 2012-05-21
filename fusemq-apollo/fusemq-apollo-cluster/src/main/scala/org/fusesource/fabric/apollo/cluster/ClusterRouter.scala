@@ -186,7 +186,7 @@ class ClusterRouter(host: ClusterVirtualHost) extends LocalRouter(host) with Rou
 
     def is_tail = cluster_connector.node_id == tail_node
 
-    def update(on_completed: Runnable) = local.update(on_completed)
+    def update(on_completed: Task) = local.update(on_completed)
 
     def resource_kind = local.resource_kind
   }

@@ -73,7 +73,7 @@ class ClusterProtocolHandler(var peer:Peer=null) extends ProtocolHandler {
       transport_handler = dead_handler
       waiting_on = ()=>"shutdown"
       connection.transport.resumeRead
-      connection.stop()
+      connection.stop(NOOP)
     }
     throw new Break()
   }

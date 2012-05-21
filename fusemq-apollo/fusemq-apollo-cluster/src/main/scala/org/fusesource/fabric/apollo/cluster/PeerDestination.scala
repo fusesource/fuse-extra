@@ -175,7 +175,7 @@ class PeerDestination(val local_destination:DomainDestination, val peer:Peer) ex
 
   def now = virtual_host.broker.now
 
-  def update(on_completed: Runnable) = local_destination.update(on_completed)
+  def update(on_completed: Task) = local_destination.update(on_completed)
 
   def resource_kind = local_destination.resource_kind
 }

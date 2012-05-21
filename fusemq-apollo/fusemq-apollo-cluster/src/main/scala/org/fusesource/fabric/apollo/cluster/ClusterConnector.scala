@@ -85,7 +85,7 @@ class ClusterConnector(val broker:Broker, val id:String) extends Connector {
     result
   }
 
-  protected def _start(on_completed: Runnable) = {
+  protected def _start(on_completed: Task) = {
 
     cluster_listeners = ClusterListenerFactory.create(this)
 
@@ -118,7 +118,7 @@ class ClusterConnector(val broker:Broker, val id:String) extends Connector {
   }
 
 
-  override def _stop(on_completed: Runnable): Unit = {
+  override def _stop(on_completed: Task): Unit = {
     if( cluster_group!=null ) {
       cluster_singleton.stop
       cluster_group = null
@@ -152,20 +152,20 @@ class ClusterConnector(val broker:Broker, val id:String) extends Connector {
 
         override def on_transport_failure(error: IOException) = {
           on_complete(Failure(error))
-          outbound_connection.stop
+          outbound_connection.stop(NOOP)
         }
       }
 
       outbound_connection.transport = TransportFactory.connect(location)
       broker.connections.put(outbound_connection.id, outbound_connection)
-      outbound_connection.start
+      outbound_connection.start(NOOP)
 
     } catch {
       case error:IOException => on_complete(Failure(error))
     }
   }
 
-  def update(config: ConnectorTypeDTO, on_complete: Runnable) = {
+  def update(config: ConnectorTypeDTO, on_complete: Task) = {
     on_complete.run()
   }
 

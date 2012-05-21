@@ -21,6 +21,7 @@ import dto.ClusterVirtualHostDTO
 import org.apache.activemq.apollo.dto.VirtualHostDTO
 import org.apache.activemq.apollo.broker.{VirtualHost, Broker, VirtualHostFactory}
 import org.apache.activemq.apollo.util.{Log, BaseService}
+import org.fusesource.hawtdispatch._
 
 /**
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
@@ -51,16 +52,16 @@ class ClusterVirtualHost(broker: Broker, id: String) extends VirtualHost(broker,
 
   val master = new BaseService() {
     def dispatch_queue = ClusterVirtualHost.this.dispatch_queue
-    protected def _start(on_completed: Runnable) = super_start(on_completed)
-    protected def _stop(on_completed: Runnable) = super_stop(on_completed)
+    protected def _start(on_completed: Task) = super_start(on_completed)
+    protected def _stop(on_completed: Task) = super_stop(on_completed)
   }
 
-  protected def super_start(on_completed: Runnable) = {
+  protected def super_start(on_completed: Task) = {
     println("virtual host started")
     super._start(on_completed)
   }
 
-  protected def super_stop(on_completed: Runnable) = {
+  protected def super_stop(on_completed: Task) = {
     println("virtual host stopped")
     super._stop(on_completed)
   }
@@ -74,7 +75,7 @@ class ClusterVirtualHost(broker: Broker, id: String) extends VirtualHost(broker,
     active = true
     this.client_redirect = None
     if( start_requested ) {
-      master.start
+      master.start(NOOP)
     }
   }
 
@@ -83,10 +84,10 @@ class ClusterVirtualHost(broker: Broker, id: String) extends VirtualHost(broker,
     dispatch_queue.assertExecuting()
     this.client_redirect = master_url
     active = false
-    master.stop
+    master.stop(NOOP)
   }
 
-  override protected def _start(on_completed: Runnable) {
+  override protected def _start(on_completed: Task) {
     start_requested = true
     if( active ) {
       master.start(on_completed)
@@ -95,7 +96,7 @@ class ClusterVirtualHost(broker: Broker, id: String) extends VirtualHost(broker,
     }
   }
 
-  override protected def _stop(on_completed: Runnable) {
+  override protected def _stop(on_completed: Task) {
     start_requested = false
     master.stop(on_completed)
   }

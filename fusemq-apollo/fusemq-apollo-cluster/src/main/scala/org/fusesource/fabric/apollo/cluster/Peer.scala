@@ -199,7 +199,7 @@ class Peer(cluster_connector:ClusterConnector, val id:String) extends Dispatched
         primary = null
       }
       handlers -= handler
-      handler.connection.stop
+      handler.connection.stop(NOOP)
     }
   }
 
