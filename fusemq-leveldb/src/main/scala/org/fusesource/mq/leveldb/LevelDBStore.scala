@@ -364,7 +364,7 @@ class LevelDBStore extends ServiceSupport with BrokerServiceAware with Persisten
   }
 
   def getLastProducerSequenceId(id: ProducerId): Long = {
-    throw new RuntimeException("Implement me.")
+    return -1
   }
 
   def size: Long = {
