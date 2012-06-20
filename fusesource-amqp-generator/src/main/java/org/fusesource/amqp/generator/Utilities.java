@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.fusesource.fabric.apollo.amqp.generator;
+package org.fusesource.amqp.generator;
 
 import java.util.HashMap;
 import java.util.Map;

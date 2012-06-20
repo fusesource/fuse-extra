@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-package org.fusesource.fabric.apollo.amqp.generator;
+package org.fusesource.amqp.generator;
 
-import org.fusesource.fabric.apollo.amqp.jaxb.schema.*;
+import org.fusesource.amqp.generator.jaxb.*;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;

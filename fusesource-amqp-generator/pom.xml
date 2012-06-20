@@ -21,7 +21,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.fusesource.fuse-extra</groupId>
-    <artifactId>fusemq-apollo-amqp</artifactId>
+    <artifactId>fuse-extra-project</artifactId>
     <version>99-master-SNAPSHOT</version>
     <relativePath>..</relativePath>
   </parent>
@@ -98,9 +98,9 @@
                 <taskdef name="xjc" classname="com.sun.tools.xjc.XJCTask"/>
                 <mkdir dir="${project.build.directory}/generated-sources/xjc"/>
                 <xjc destdir="${project.build.directory}/generated-sources/xjc"
-                     package="org.fusesource.fabric.apollo.amqp.jaxb.schema">
+                     package="org.fusesource.amqp.generator.jaxb">
                   <arg value="-dtd"/>
-                  <schema file="${basedir}/src/main/resources/org/fusesource/fabric/apollo/amqp/generator/amqp.dtd"/>
+                  <schema file="${basedir}/src/main/schemas/amqp.dtd"/>
                 </xjc>
               </tasks>
             </configuration>

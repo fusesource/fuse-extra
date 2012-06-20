@@ -15,16 +15,16 @@
  * limitations under the License.
  */
 
-package org.fusesource.fabric.apollo.amqp.generator;
+package org.fusesource.amqp.generator;
 
 import com.sun.codemodel.*;
-import org.fusesource.fabric.apollo.amqp.jaxb.schema.Choice;
-import org.fusesource.fabric.apollo.amqp.jaxb.schema.Type;
+import org.fusesource.amqp.generator.jaxb.Choice;
+import org.fusesource.amqp.generator.jaxb.Type;
 import org.fusesource.hawtbuf.AsciiBuffer;
 import org.fusesource.hawtbuf.Buffer;
 
-import static org.fusesource.fabric.apollo.amqp.generator.Utilities.toJavaClassName;
-import static org.fusesource.fabric.apollo.amqp.generator.Utilities.toStaticName;
+import static org.fusesource.amqp.generator.Utilities.toJavaClassName;
+import static org.fusesource.amqp.generator.Utilities.toStaticName;
 import static com.sun.codemodel.JExpr.*;
 
 /**
