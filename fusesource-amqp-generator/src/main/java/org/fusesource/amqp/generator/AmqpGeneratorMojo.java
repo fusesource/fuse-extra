@@ -91,7 +91,7 @@ public class AmqpGeneratorMojo extends AbstractMojo {
     /**
      * The package prefix to put the generated Java classes in
      *
-     * @parameter default-value="org.fusesource.fabric.apollo.amqp.codec"
+     * @parameter default-value="org.fusesource.amqp.codec"
      */
     private String packagePrefix;
 

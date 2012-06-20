@@ -104,7 +104,7 @@ public class Generator {
         mapping.put("symbol", Buffer.class.getName());
 
         mapping.put("list", List.class.getName());
-        mapping.put("map", "org.fusesource.fabric.apollo.amqp.codec.types.MapEntries");
+        mapping.put("map", "org.fusesource.amqp.codec.types.MapEntries");
         mapping.put("array", Object[].class.getName());
     }
 
