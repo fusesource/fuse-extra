@@ -43,7 +43,6 @@
       <id>unstable</id>
       <modules>
         <module>fusemq-apollo-cluster</module>
-        <module>fusemq-apollo-amqp</module>
       </modules>
     </profile>
   </profiles>
