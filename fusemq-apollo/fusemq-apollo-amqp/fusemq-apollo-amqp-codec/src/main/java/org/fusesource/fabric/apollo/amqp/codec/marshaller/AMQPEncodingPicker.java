@@ -20,15 +20,13 @@ package org.fusesource.fabric.apollo.amqp.codec.marshaller;
 import org.fusesource.fabric.apollo.amqp.codec.interfaces.AMQPType;
 import org.fusesource.fabric.apollo.amqp.codec.interfaces.EncodingPicker;
 import org.fusesource.fabric.apollo.amqp.codec.types.AMQPMap;
+import org.fusesource.fabric.apollo.amqp.codec.types.MapEntries;
 import org.fusesource.hawtbuf.Buffer;
 import org.fusesource.hawtbuf.UTF8Buffer;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import static org.fusesource.fabric.apollo.amqp.codec.marshaller.ArraySupport.getArrayConstructorSize;
 import static org.fusesource.fabric.apollo.amqp.codec.marshaller.TypeRegistry.NULL_FORMAT_CODE;
@@ -204,18 +202,23 @@ public class AMQPEncodingPicker implements EncodingPicker {
         return LONG_CODE;
     }
 
-    public byte chooseMapEncoding(Map value) {
+    public byte chooseMapEncoding(MapEntries value) {
+        int max = 255 - AMQPMap.MAP_MAP8_WIDTH;
         if (value == null) {
             return NULL_FORMAT_CODE;
         }
-        if (value.keySet().size() + value.values().size() > 255) {
+        if (value.size()*2 > max) {
             return MAP_MAP32_CODE;
         }
         int size = 0;
-        for (Object key : value.keySet()) {
-            size += ((AMQPType)key).size();
-            size += ((AMQPType)value.get(key)).size();
-            if (size > (255 - AMQPMap.MAP_MAP8_WIDTH)) {
+        for (AbstractMap.SimpleImmutableEntry<AMQPType, AMQPType> entry : value) {
+            size += entry.getKey().size();
+            if( entry.getValue() ==null ) {
+                size += 1;
+            } else {
+                size += entry.getValue().size();
+            }
+            if (size > max) {
                 return MAP_MAP32_CODE;
             }
         }

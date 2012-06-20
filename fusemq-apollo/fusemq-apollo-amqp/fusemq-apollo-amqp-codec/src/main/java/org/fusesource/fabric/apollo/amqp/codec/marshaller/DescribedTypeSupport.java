@@ -17,6 +17,8 @@
 
 package org.fusesource.fabric.apollo.amqp.codec.marshaller;
 
+import org.fusesource.fabric.apollo.amqp.codec.interfaces.AMQPType;
+
 import java.io.DataInput;
 import java.io.DataOutput;
 
@@ -87,6 +89,5 @@ public class DescribedTypeSupport {
         }
 
     }
-
 
 }

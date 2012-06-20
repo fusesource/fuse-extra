@@ -86,13 +86,11 @@ public class DescribedType extends AmqpDefinedType {
                 SYMBOLIC_ID = cls().field(mods, Buffer.class, "SYMBOLIC_ID", _new(cm.ref(AsciiBuffer.class)).arg(desc.getName()));
                 SYMBOLIC_ID_SIZE = cls().field(mods, Long.class, "SYMBOLIC_ID_SIZE", generator.registry().cls().staticInvoke("instance").invoke("sizer").invoke("sizeOfSymbol").arg(ref("SYMBOLIC_ID")));
 
-                String code = desc.getCode();
-                String category = code.split(":")[0];
-                String descriptorId = code.split(":")[1];
+                String[] code = desc.getCode().split(":");
+                String category = code[0];
+                String descriptorId = code[1];
                 category = category.substring(2);
-                category = category.substring(4);
                 descriptorId = descriptorId.substring(2);
-                descriptorId = descriptorId.substring(4);
 
                 //CATEGORY = cls().field(mods, long.class, "CATEGORY", JExpr.lit(Integer.parseInt(category.substring(2), 16)));
                 //DESCRIPTOR_ID = cls().field(mods, long.class, "DESCRIPTOR_ID", JExpr.lit(Integer.parseInt(descriptorId.substring(2), 16)));
@@ -130,20 +128,30 @@ public class DescribedType extends AmqpDefinedType {
     }
 
     public void generateToString() {
-        JMethod toString = cls().method(JMod.PUBLIC, cm.ref("java.lang.String"), "toString");
-
-        toString.body().decl(cm.ref("java.lang.String"), "rc", lit(toJavaClassName(type.getName()) + "{"));
-
-        for ( Attribute attr : amqpFields ) {
+        JMethod toString1 = cls().method(JMod.PUBLIC, cm.ref("java.lang.String"), "toString");
+        toString1.body()._return(ref("this").invoke("toString").arg(lit("")));
+        
+        JMethod toString2 = cls().method(JMod.PUBLIC, cm.ref("java.lang.String"), "toString");
+        toString2.param(String.class, "indent");
+        toString2.body().decl(cm.ref("java.lang.String"), "rc", lit("["+toJavaClassName(type.getName()) + ", {\n"));
+        for (int i = 0; i < amqpFields.size(); i++) {
+            Attribute attr = amqpFields.get(i);
+            String eol = ",\n";
+            if(i+1 == amqpFields.size()) {
+                eol = "\n";
+            }
             if ( attr.attribute.type().isArray() ) {
-                toString.body()._if(_this().ref(attr.attribute).ne(_null()))._then().assignPlus(ref("rc"), lit(attr.attribute.name() + "=").plus(cm.ref("java.util.Arrays").staticInvoke("toString").arg(_this().ref(attr.attribute))).plus(lit(" ")));
+                toString2.body()._if(_this().ref(attr.attribute).ne(_null()))._then().assignPlus(ref("rc"), ref("indent").plus(lit("  "+attr.attribute.name() + ":").plus(cm.ref("java.util.Arrays").staticInvoke("toString").arg(_this().ref(attr.attribute))).plus(lit(eol))));
             } else {
-                toString.body()._if(_this().ref(attr.attribute).ne(_null()))._then().assignPlus(ref("rc"), lit(attr.attribute.name() + "=").plus(_this().ref(attr.attribute)).plus(lit(" ")));
+                JExpression value = _this().ref(attr.attribute);
+                if ( generator.getMapping().get(attr.type) == null ) {
+                    value = value.invoke("toString").arg(ref("indent").plus(lit("  ")));
+                }
+                toString2.body()._if(_this().ref(attr.attribute).ne(_null()))._then().assignPlus(ref("rc"), ref("indent").plus(lit("  "+attr.attribute.name() + ":").plus(value).plus(lit(eol))));
             }
         }
-        toString.body().assign(ref("rc"), ref("rc").invoke("trim"));
-        toString.body().assignPlus(ref("rc"), lit("}"));
-        toString.body()._return(ref("rc"));
+        toString2.body().assignPlus(ref("rc"), ref("indent").plus(lit("}]")));
+        toString2.body()._return(ref("rc"));
     }
 
     public boolean isComposite() {
@@ -265,7 +273,7 @@ public class DescribedType extends AmqpDefinedType {
 
             Log.info("Using field type %s", fieldType);
 
-            Class clazz = generator.getMapping().get(fieldType);
+            String clazz = generator.getMapping().get(fieldType);
             JClass c = null;
             if ( fieldType.equals(generator.getAmqpBaseType()) ) {
                 c = cm.ref(fieldType);
@@ -275,7 +283,7 @@ public class DescribedType extends AmqpDefinedType {
                 if ( array ) {
                     c = cm.ref(generator.getPrimitiveJavaClass().get(fieldType));
                 } else {
-                    c = cm.ref(clazz.getName());
+                    c = cm.ref(clazz);
                 }
             }
             if ( array ) {

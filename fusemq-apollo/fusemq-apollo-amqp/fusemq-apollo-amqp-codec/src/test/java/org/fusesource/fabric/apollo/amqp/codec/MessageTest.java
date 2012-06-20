@@ -20,13 +20,11 @@ package org.fusesource.fabric.apollo.amqp.codec;
 import org.fusesource.fabric.apollo.amqp.codec.api.*;
 import org.fusesource.fabric.apollo.amqp.codec.interfaces.AMQPType;
 import org.fusesource.fabric.apollo.amqp.codec.types.*;
+import org.fusesource.fabric.apollo.amqp.codec.types.Properties;
 import org.fusesource.hawtbuf.Buffer;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import static org.fusesource.fabric.apollo.amqp.codec.TestSupport.encodeDecode;
 import static org.fusesource.fabric.apollo.amqp.codec.api.MessageFactory.createAnnotatedMessage;
@@ -148,14 +146,14 @@ public class MessageTest {
 
         AnnotatedMessage in = createAnnotatedMessage(msg);
         in.setDeliveryAnnotations(new DeliveryAnnotations());
-        in.getDeliveryAnnotations().setValue(new HashMap<AMQPSymbol, AMQPString>());
-        in.getDeliveryAnnotations().getValue().put(new AMQPSymbol(Footer.CONSTRUCTOR.getBuffer()), new AMQPString("Hi!"));
+        in.getDeliveryAnnotations().setValue(new MapEntries());
+        in.getDeliveryAnnotations().getValue().add(new AMQPSymbol(Footer.CONSTRUCTOR.getBuffer()), new AMQPString("Hi!"));
         in.setHeader(new Header());
         in.getHeader().setDurable(true);
         in.getHeader().setDeliveryCount(0L);
         in.setFooter(new Footer());
-        in.getFooter().setValue(new HashMap<AMQPSymbol, AMQPString>());
-        in.getFooter().getValue().put(new AMQPSymbol(Buffer.ascii("test").buffer()), new AMQPString("value"));
+        in.getFooter().setValue(new MapEntries());
+        in.getFooter().getValue().add(new AMQPSymbol(Buffer.ascii("test").buffer()), new AMQPString("value"));
         return in;
     }
 

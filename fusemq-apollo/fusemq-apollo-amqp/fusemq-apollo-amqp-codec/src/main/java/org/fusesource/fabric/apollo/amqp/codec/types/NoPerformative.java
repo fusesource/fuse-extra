@@ -63,4 +63,8 @@ public class NoPerformative implements Frame {
     public String toString() {
         return getClass().getSimpleName();
     }
+
+    public String toString(String indent) {
+        return toString();
+    }
 }

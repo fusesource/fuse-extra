@@ -19,15 +19,13 @@ package org.fusesource.fabric.apollo.amqp.codec.marshaller;
 
 import org.fusesource.fabric.apollo.amqp.codec.interfaces.AMQPType;
 import org.fusesource.fabric.apollo.amqp.codec.interfaces.Sizer;
+import org.fusesource.fabric.apollo.amqp.codec.types.MapEntries;
 import org.fusesource.hawtbuf.Buffer;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import static org.fusesource.fabric.apollo.amqp.codec.marshaller.ArraySupport.getArrayBodySize;
 import static org.fusesource.fabric.apollo.amqp.codec.marshaller.ArraySupport.getArrayConstructorSize;
@@ -221,7 +219,7 @@ public class AMQPSizer implements Sizer {
         }
     }
 
-    public long sizeOfMap(Map value) {
+    public long sizeOfMap(MapEntries value) {
         int size = 1;
         byte formatCode = TypeRegistry.instance().picker().chooseMapEncoding(value);
         switch (formatCode) {
@@ -236,14 +234,12 @@ public class AMQPSizer implements Sizer {
             default:
                 throw new RuntimeException("Unknown format code 0x" + String.format("%x", formatCode));
         }
-
-        for (Object key : value.keySet()) {
-            size += ((AMQPType)key).size();
-            Object obj = value.get(key);
-            if (obj == null) {
+        for (AbstractMap.SimpleImmutableEntry<AMQPType, AMQPType> entry : value) {
+            size += entry.getKey().size();
+            if (entry.getValue() == null) {
                 size += 1;
             } else {
-                size += ((AMQPType)obj).size();
+                size += entry.getValue().size();
             }
         }
         return size;

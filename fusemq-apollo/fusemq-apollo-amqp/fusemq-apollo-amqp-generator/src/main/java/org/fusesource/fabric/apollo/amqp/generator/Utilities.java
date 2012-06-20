@@ -44,7 +44,7 @@ public class Utilities {
         substitutions.put("Vbin", "VBIN");
         substitutions.put("Utf", "UTF");
         substitutions.put("ListList", "List");
-        substitutions.put("MapMap", "Map");
+        substitutions.put("MapMap", "MapEntries");
         substitutions.put("ArrayArray", "Array");
         substitutions.put("Smalllong", "SmallLong");
         substitutions.put("Smallint", "SmallInt");

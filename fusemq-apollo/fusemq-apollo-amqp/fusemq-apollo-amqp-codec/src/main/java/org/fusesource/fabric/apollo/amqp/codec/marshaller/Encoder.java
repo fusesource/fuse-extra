@@ -19,10 +19,7 @@ package org.fusesource.fabric.apollo.amqp.codec.marshaller;
 
 import org.fusesource.fabric.apollo.amqp.codec.interfaces.AMQPType;
 import org.fusesource.fabric.apollo.amqp.codec.interfaces.PrimitiveEncoder;
-import org.fusesource.fabric.apollo.amqp.codec.types.AMQPArray;
-import org.fusesource.fabric.apollo.amqp.codec.types.AMQPList;
-import org.fusesource.fabric.apollo.amqp.codec.types.AMQPMap;
-import org.fusesource.fabric.apollo.amqp.codec.types.AMQPULong;
+import org.fusesource.fabric.apollo.amqp.codec.types.*;
 import org.fusesource.hawtbuf.Buffer;
 import org.fusesource.hawtbuf.UTF8Buffer;
 
@@ -318,60 +315,61 @@ public class Encoder implements PrimitiveEncoder {
         out.writeByte(value.byteValue());
     }
 
-    public Map readMap8(DataInput in) throws Exception {
+    public MapEntries readMapEntries8(DataInput in) throws Exception {
         Long size = (long) in.readUnsignedByte();
         Long count = (long) in.readUnsignedByte();
-        return readMapData(in, size, count, AMQPMap.MAP_MAP8_WIDTH);
+        return readMapEntriesData(in, size, count, AMQPMap.MAP_MAP8_WIDTH);
     }
 
-    private Map readMapData(DataInput in, Long size, Long count, int width) throws Exception {
+    private MapEntries readMapEntriesData(DataInput in, long size, long count, int width) throws Exception {
         if ( count % 2 != 0 ) {
             throw new RuntimeException(String.format("Map count (%s) is not divisible by 2", count));
         }
-        Map rc = new HashMap();
+        MapEntries rc = new MapEntries((int) count/2);
         while (count > 0) {
-            rc.put(TypeReader.read(in), TypeReader.read(in));
+            AMQPType key = TypeReader.read(in);
+            AMQPType value = TypeReader.read(in);
+            rc.add(new AbstractMap.SimpleImmutableEntry(key, value));
             count -= 2;
         }
         Long actualSize = TypeRegistry.instance().sizer().sizeOfMap(rc) - 1 - width;
-        if ( size.longValue() != actualSize.longValue() ) {
+        if ( size != actualSize.longValue() ) {
             throw new RuntimeException(String.format("Encoded size of map (%s) does not match actual size of map (%s)", size, actualSize));
         }
         return rc;
     }
 
-    public void writeMap8(Map value, DataOutput out) throws Exception {
+    public void writeMapEntries8(MapEntries value, DataOutput out) throws Exception {
         Long size = TypeRegistry.instance().sizer().sizeOfMap(value) - 1 - AMQPMap.MAP_MAP8_WIDTH;
-        Long count = (long) (value.keySet().size() + value.values().size());
+        Long count = (long) (value.size() * 2);
         writeUByte(size.shortValue(), out);
         writeUByte(count.shortValue(), out);
-        writeMapData(value, out);
+        writeMapEntriesData(value, out);
     }
 
-    private void writeMapData(Map value, DataOutput out) throws Exception {
-        for ( Object key : value.keySet() ) {
-            ((AMQPType) key).write(out);
-            Object v = value.get(key);
-            if ( v == null ) {
+    private void writeMapEntriesData(MapEntries value, DataOutput out) throws Exception {
+        for (AbstractMap.SimpleImmutableEntry<AMQPType, AMQPType> entry : value) {
+            entry.getKey().write(out);
+            if ( entry.getValue() == null ) {
                 writeNull(out);
             } else {
-                ((AMQPType) v).write(out);
+                entry.getValue().write(out);
             }
         }
     }
 
-    public Map readMap32(DataInput in) throws Exception {
+    public MapEntries readMapEntries32(DataInput in) throws Exception {
         Long size = readUInt(in);
         Long count = readUInt(in);
-        return readMapData(in, size, count, AMQPMap.MAP_MAP32_WIDTH);
+        return readMapEntriesData(in, size, count, AMQPMap.MAP_MAP32_WIDTH);
     }
 
-    public void writeMap32(Map value, DataOutput out) throws Exception {
+    public void writeMapEntries32(MapEntries value, DataOutput out) throws Exception {
         Long size = TypeRegistry.instance().sizer().sizeOfMap(value) - 1 - AMQPMap.MAP_MAP32_WIDTH;
-        Long count = (long) (value.keySet().size() + value.values().size());
+        Long count = (long) (value.size() * 2);
         writeUInt(size, out);
         writeUInt(count, out);
-        writeMapData(value, out);
+        writeMapEntriesData(value, out);
     }
 
     public Object readNull(DataInput in) throws Exception {

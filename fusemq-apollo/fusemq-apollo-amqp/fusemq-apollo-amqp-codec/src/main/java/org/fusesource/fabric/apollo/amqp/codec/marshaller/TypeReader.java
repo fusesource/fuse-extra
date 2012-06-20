@@ -22,6 +22,8 @@ import org.fusesource.fabric.apollo.amqp.codec.types.AMQPSymbol;
 import org.fusesource.fabric.apollo.amqp.codec.types.AMQPULong;
 
 import java.io.DataInput;
+import java.io.EOFException;
+import java.io.IOException;
 
 /**
  *
@@ -29,7 +31,11 @@ import java.io.DataInput;
 public class TypeReader {
 
     public static byte readFormatCode(DataInput in) throws Exception {
-        return in.readByte();
+        try {
+            return in.readByte();
+        } catch (EOFException e) {
+            return -1;
+        }
     }
 
     public static AMQPType readDescriptor(DataInput in) throws Exception {
@@ -60,6 +66,11 @@ public class TypeReader {
             rc = TypeRegistry.instance().getSymbolicCodeMap().get(((AMQPSymbol) descriptor).getValue());
         } else {
             throw new IllegalArgumentException("Unknown AMQP descriptor type");
+        }
+        if( rc == null ) {
+            TypeRegistry instance = TypeRegistry.instance();
+            System.out.println(instance);
+            throw new IllegalArgumentException("Unknown AMQP descriptor: "+descriptor);
         }
         return rc;
     }

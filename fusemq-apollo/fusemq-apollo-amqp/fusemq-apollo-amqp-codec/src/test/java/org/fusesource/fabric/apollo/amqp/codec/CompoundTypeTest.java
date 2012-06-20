@@ -22,7 +22,6 @@ import org.junit.Test;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -73,20 +72,20 @@ public class CompoundTypeTest {
 
     @Test
     public void testMap8() throws Exception {
-        Map in = new HashMap();
-        in.put(new AMQPString("key"), new AMQPString("value"));
-        in.put(new AMQPString("int"), new AMQPInt(23));
-        Map out = writeRead(new AMQPMap(in)).getValue();
+        MapEntries in = new MapEntries();
+        in.add(new AMQPString("key"), new AMQPString("value"));
+        in.add(new AMQPString("int"), new AMQPInt(23));
+        MapEntries out = writeRead(new AMQPMap(in)).getValue();
         assertEquals(in, out);
     }
 
     @Test
     public void testMap32() throws Exception {
-        Map in = new HashMap();
+        MapEntries in = new MapEntries();
         for ( int i = 0; i < 2048; i++ ) {
-            in.put(new AMQPString("key" + i), new AMQPString("value" + i));
+            in.add(new AMQPString("key" + i), new AMQPString("value" + i));
         }
-        Map out = writeRead(new AMQPMap(in)).getValue();
+        MapEntries out = writeRead(new AMQPMap(in)).getValue();
         assertEquals(in, out);
     }
 

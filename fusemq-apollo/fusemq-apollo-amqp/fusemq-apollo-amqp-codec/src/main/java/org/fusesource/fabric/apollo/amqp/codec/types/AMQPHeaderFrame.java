@@ -31,14 +31,14 @@ import java.io.IOException;
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-public class AMQPProtocolHeader implements AMQPFrame {
+public class AMQPHeaderFrame implements AMQPFrame {
 
     public static Buffer PROTOCOL_HEADER = init();
 
     private static Buffer init() {
         Buffer rc = new Buffer(AMQPProtocolHeaderCodec.INSTANCE.getFixedSize());
         try {
-            AMQPProtocolHeaderCodec.INSTANCE.encode(new AMQPProtocolHeader(), new DataOutputStream(rc.out()));
+            AMQPProtocolHeaderCodec.INSTANCE.encode(new AMQPHeaderFrame(), new DataOutputStream(rc.out()));
         } catch (IOException e) {
             throw new RuntimeException("Error initializing static protocol header buffer : " + e.getMessage());
         }
@@ -52,21 +52,55 @@ public class AMQPProtocolHeader implements AMQPFrame {
     public short minor;
     public short revision;
 
-    public AMQPProtocolHeader() {
+    public AMQPHeaderFrame() {
         protocolId = AMQPDefinitions.PROTOCOL_ID;
         major = AMQPDefinitions.MAJOR;
         minor = AMQPDefinitions.MINOR;
         revision = AMQPDefinitions.REVISION;
     }
 
-    public AMQPProtocolHeader(AMQPProtocolHeader value) {
+    public AMQPHeaderFrame(AMQPHeaderFrame value) {
         this.protocolId = value.protocolId;
         this.major = value.major;
         this.minor = value.minor;
         this.revision = value.revision;
     }
 
-    public String toString() {
-        return String.format("AmqpProtocolHeader : id=%s major=%s minor=%s revision=%s", protocolId, major, minor, revision);
+    public short getMajor() {
+        return major;
     }
+
+    public void setMajor(short major) {
+        this.major = major;
+    }
+
+    public short getMinor() {
+        return minor;
+    }
+
+    public void setMinor(short minor) {
+        this.minor = minor;
+    }
+
+    public short getProtocolId() {
+        return protocolId;
+    }
+
+    public void setProtocolId(short protocolId) {
+        this.protocolId = protocolId;
+    }
+
+    public short getRevision() {
+        return revision;
+    }
+
+    public void setRevision(short revision) {
+        this.revision = revision;
+    }
+
+    public String toString() {
+        return String.format("[AMQPHeaderFrame, {id:%s, major:%s, minor:%s, revision:%s}]", protocolId, major, minor, revision);
+    }
+
+
 }

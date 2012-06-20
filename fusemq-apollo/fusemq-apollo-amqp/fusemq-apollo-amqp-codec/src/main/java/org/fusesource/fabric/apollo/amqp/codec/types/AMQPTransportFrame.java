@@ -173,8 +173,8 @@ public class AMQPTransportFrame implements AMQPFrame {
         payload.writeTo(out);
     }
 
-    public long getFrameSize() {
-        long ret = header.length + extHeader.length;
+    public int getFrameSize() {
+        int ret = header.length + extHeader.length;
         if (performative != null) {
             ret += performative.size();
         }
@@ -207,39 +207,48 @@ public class AMQPTransportFrame implements AMQPFrame {
     }
 
     public final void setSize(long size) {
-        BitUtils.setUInt(header.data, SIZE_OFFSET, size);
+        BitUtils.setUInt(header.data, header.offset+SIZE_OFFSET, size);
     }
 
     public long getSize() {
-        return BitUtils.getUInt(header.data, SIZE_OFFSET);
+        return BitUtils.getUInt(header.data, header.offset+SIZE_OFFSET);
     }
 
     public final void setType(int type) {
-        BitUtils.setUByte(header.data, TYPE_OFFSET, (short) type);
+        BitUtils.setUByte(header.data, header.offset+TYPE_OFFSET, (short) type);
     }
 
     public final int getType() {
-        return BitUtils.getUByte(header.data, TYPE_OFFSET);
+        return BitUtils.getUByte(header.data, header.offset+TYPE_OFFSET);
     }
 
     public final void setDoff(int doff) {
-        BitUtils.setUByte(header.data, DOFF_OFFSET, (short) doff);
+        BitUtils.setUByte(header.data, header.offset+DOFF_OFFSET, (short) doff);
     }
 
     public final int getDoff() {
-        return BitUtils.getUByte(header.data, DOFF_OFFSET);
+        return BitUtils.getUByte(header.data, header.offset+DOFF_OFFSET);
     }
 
     public final void setChannel(int channel) {
-        BitUtils.setUShort(header.data, CHANNEL_OFFSET, channel);
+        BitUtils.setUShort(header.data, header.offset+CHANNEL_OFFSET, channel);
     }
 
     public final int getChannel() {
-        return BitUtils.getUShort(header.data, CHANNEL_OFFSET);
+        return BitUtils.getUShort(header.data, header.offset+CHANNEL_OFFSET);
     }
 
     public String toString() {
-        return "AmqpFrame{size=" + getSize() + " dataOffset=" + getDoff() + " channel=" + getChannel() + " type=" + getType() + " performative=" + performative + " payload=" + payload + "}";
-
+        if( performative!=null && payload.length()==0 && getType()==0) {
+            return performative.toString();
+        }
+        return "[AMQPTransportFrame, {\n"+
+                "  frameSize:"+getFrameSize()+",\n" +
+                "  dataOffset:"+getDoff()+",\n" +
+                "  channel:"+getChannel()+",\n" +
+                "  type:"+getType()+",\n" +
+                "  performative:"+performative.toString("  ")+",\n" +
+                "  payload:"+payload+"\n" +
+                "}]";
     }
 }

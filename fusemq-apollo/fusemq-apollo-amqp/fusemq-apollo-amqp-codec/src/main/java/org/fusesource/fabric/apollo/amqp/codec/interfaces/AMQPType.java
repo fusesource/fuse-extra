@@ -39,4 +39,5 @@ public interface AMQPType {
     public long sizeOfConstructor();
     public long sizeOfBody();
 
+    public String toString(String indent);
 }

@@ -18,7 +18,7 @@
 package org.fusesource.fabric.apollo.amqp.codec.marshaller;
 
 import org.fusesource.fabric.apollo.amqp.codec.AMQPDefinitions;
-import org.fusesource.fabric.apollo.amqp.codec.types.AMQPProtocolHeader;
+import org.fusesource.fabric.apollo.amqp.codec.types.AMQPHeaderFrame;
 import org.fusesource.hawtbuf.codec.Codec;
 
 import java.io.DataInput;
@@ -32,17 +32,17 @@ import java.util.Arrays;
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-public class AMQPProtocolHeaderCodec implements Codec<AMQPProtocolHeader> {
+public class AMQPProtocolHeaderCodec implements Codec<AMQPHeaderFrame> {
 
     public static final AMQPProtocolHeaderCodec INSTANCE = new AMQPProtocolHeaderCodec();
 
-    public AMQPProtocolHeader decode(DataInput in) throws IOException {
+    public AMQPHeaderFrame decode(DataInput in) throws IOException {
         byte magic[] = new byte[4];
         in.readFully(magic);
         if( !Arrays.equals(magic, AMQPDefinitions.MAGIC) ) {
             throw new IOException("Invalid magic");
         }
-        AMQPProtocolHeader rc = new AMQPProtocolHeader();
+        AMQPHeaderFrame rc = new AMQPHeaderFrame();
         rc.protocolId = (short) (in.readByte() & 0xFF);
         rc.major = (short) (in.readByte() & 0xFF);
         rc.minor = (short) (in.readByte() & 0xFF);
@@ -50,7 +50,7 @@ public class AMQPProtocolHeaderCodec implements Codec<AMQPProtocolHeader> {
         return rc;
     }
 
-    public void encode(AMQPProtocolHeader value, DataOutput out) throws IOException {
+    public void encode(AMQPHeaderFrame value, DataOutput out) throws IOException {
         out.write(AMQPDefinitions.MAGIC);
         out.write(value.protocolId);
         out.writeByte(value.major);
@@ -66,7 +66,7 @@ public class AMQPProtocolHeaderCodec implements Codec<AMQPProtocolHeader> {
         return true;
     }
 
-    public int estimatedSize(AMQPProtocolHeader value) {
+    public int estimatedSize(AMQPHeaderFrame value) {
         return 8;
     }
 
@@ -74,7 +74,7 @@ public class AMQPProtocolHeaderCodec implements Codec<AMQPProtocolHeader> {
         return true;
     }
 
-    public AMQPProtocolHeader deepCopy(AMQPProtocolHeader value) {
-        return new AMQPProtocolHeader(value);
+    public AMQPHeaderFrame deepCopy(AMQPHeaderFrame value) {
+        return new AMQPHeaderFrame(value);
     }
 }

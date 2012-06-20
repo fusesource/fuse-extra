@@ -117,11 +117,16 @@ public class PrimitiveType extends AmqpDefinedType {
 
     private void generateToString() {
         toString = cls().method(JMod.PUBLIC, cm.ref("java.lang.String"), "toString");
-        toString.body()._if(_this().ref("value").eq(_null()))._then().block()._return(lit("null"));
+        toString.body()._return(ref("this").invoke("toString").arg(lit("")));
+
+        JMethod toString2 = cls().method(JMod.PUBLIC, cm.ref("java.lang.String"), "toString");
+        toString2.param(String.class, "indent");
+
+        toString2.body()._if(_this().ref("value").eq(_null()))._then().block()._return(lit("null"));
         if ( type.getName().equals("array") ) {
-            toString.body()._return(cm.ref("java.util.Arrays").staticInvoke("toString").arg(_this().ref("value")));
+            toString2.body()._return(cm.ref("java.util.Arrays").staticInvoke("toString").arg(_this().ref("value")));
         } else {
-            toString.body()._return(_this().ref("value").invoke("toString"));
+            toString2.body()._return(_this().ref("value").invoke("toString"));
         }
     }
 
@@ -163,7 +168,7 @@ public class PrimitiveType extends AmqpDefinedType {
 
         JSwitch staticReadSwitchBlock = staticRead().body().block()._switch(ref("formatCode"));
 
-        staticReadSwitchBlock._case(generator.registry().cls().staticRef("NULL_FORMAT_CODE")).body()._return(cast(cm._ref(getJavaType()), generator.registry().cls()
+        staticReadSwitchBlock._case(generator.registry().cls().staticRef("NULL_FORMAT_CODE")).body()._return(cast(getJavaType(), generator.registry().cls()
                 .staticInvoke("instance")
                 .invoke("encoder")
                 .invoke("readNull")
@@ -287,7 +292,10 @@ public class PrimitiveType extends AmqpDefinedType {
         return staticRead;
     }
 
-    public Class getJavaType() {
-        return generator.getMapping().get(type.getName());
+    public JClass getJavaType() {
+        String name = generator.getMapping().get(type.getName());
+        if( name == null )
+            return null;
+        return cm.ref(name);
     }
 }

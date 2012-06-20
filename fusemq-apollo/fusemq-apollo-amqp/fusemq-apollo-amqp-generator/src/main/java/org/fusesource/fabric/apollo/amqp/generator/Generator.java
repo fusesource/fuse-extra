@@ -63,7 +63,7 @@ public class Generator {
     private TreeSet<String> classes = new TreeSet<String>();
 
     private TreeMap<String, String> sections = new TreeMap<String, String>();
-    private TreeMap<String, Class> mapping = new TreeMap<String, Class>();
+    private TreeMap<String, String> mapping = new TreeMap<String, String>();
 
     JCodeModel cm = new JCodeModel();
 
@@ -82,30 +82,30 @@ public class Generator {
 
     public Generator() {
         mapping.put("null", null);
-        mapping.put("boolean", Boolean.class);
-        mapping.put("ubyte", Short.class);
-        mapping.put("ushort", Integer.class);
-        mapping.put("uint", Long.class);
-        mapping.put("ulong", BigInteger.class);
-        mapping.put("byte", Byte.class);
-        mapping.put("short", Short.class);
-        mapping.put("int", Integer.class);
-        mapping.put("long", Long.class);
-        mapping.put("float", Float.class);
-        mapping.put("double", Double.class);
-        mapping.put("decimal32", BigDecimal.class);
-        mapping.put("decimal64", BigDecimal.class);
-        mapping.put("decimal128", BigDecimal.class);
-        mapping.put("char", Character.class);
-        mapping.put("timestamp", Date.class);
-        mapping.put("uuid", UUID.class);
-        mapping.put("binary", Buffer.class);
-        mapping.put("string", String.class);
-        mapping.put("symbol", Buffer.class);
+        mapping.put("boolean", Boolean.class.getName());
+        mapping.put("ubyte", Short.class.getName());
+        mapping.put("ushort", Integer.class.getName());
+        mapping.put("uint", Long.class.getName());
+        mapping.put("ulong", BigInteger.class.getName());
+        mapping.put("byte", Byte.class.getName());
+        mapping.put("short", Short.class.getName());
+        mapping.put("int", Integer.class.getName());
+        mapping.put("long", Long.class.getName());
+        mapping.put("float", Float.class.getName());
+        mapping.put("double", Double.class.getName());
+        mapping.put("decimal32", BigDecimal.class.getName());
+        mapping.put("decimal64", BigDecimal.class.getName());
+        mapping.put("decimal128", BigDecimal.class.getName());
+        mapping.put("char", Character.class.getName());
+        mapping.put("timestamp", Date.class.getName());
+        mapping.put("uuid", UUID.class.getName());
+        mapping.put("binary", Buffer.class.getName());
+        mapping.put("string", String.class.getName());
+        mapping.put("symbol", Buffer.class.getName());
 
-        mapping.put("list", List.class);
-        mapping.put("map", Map.class);
-        mapping.put("array", Object[].class);
+        mapping.put("list", List.class.getName());
+        mapping.put("map", "org.fusesource.fabric.apollo.amqp.codec.types.MapEntries");
+        mapping.put("array", Object[].class.getName());
     }
 
     public File getSourceDirectory() {
@@ -241,12 +241,12 @@ public class Generator {
     private void createEncodeDecodeMethods(JDefinedClass clazz, int mods, Type type, String methodName) {
         JMethod readMethod;
 
-        Class m = mapping.get(type.getName());
+        String m = mapping.get(type.getName());
 
         if ( m == null ) {
             readMethod = clazz.method(mods, cm.ref("java.lang.Object"), "read" + methodName);
         } else {
-            readMethod = clazz.method(mods, m, "read" + methodName);
+            readMethod = clazz.method(mods, cm.ref(m), "read" + methodName);
         }
         readMethod._throws(java.lang.Exception.class);
         readMethod.param(DataInput.class, "in");
@@ -254,7 +254,7 @@ public class Generator {
         JMethod writeMethod = clazz.method(mods, cm.VOID, "write" + methodName);
         writeMethod._throws(java.lang.Exception.class);
         if ( m != null ) {
-            writeMethod.param(m, "value");
+            writeMethod.param(cm.ref(m), "value");
         }
         writeMethod.param(DataOutput.class, "out");
 
@@ -433,7 +433,7 @@ public class Generator {
         return sections;
     }
 
-    public Map<String, Class> getMapping() {
+    public Map<String, String> getMapping() {
         return mapping;
     }
 

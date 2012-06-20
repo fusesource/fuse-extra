@@ -23,7 +23,6 @@ import org.fusesource.hawtbuf.Buffer;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import static org.fusesource.fabric.apollo.amqp.codec.TestSupport.writeRead;
 import static org.fusesource.hawtbuf.Buffer.ascii;
@@ -37,9 +36,9 @@ public class DescribedTypeTest {
     @Test
     public void testApplicationProperties() throws Exception {
         ApplicationProperties in = new ApplicationProperties();
-        in.setValue(new HashMap());
-        in.getValue().put(new AMQPSymbol(ascii("one").buffer()), new AMQPString("two"));
-        in.getValue().put(new AMQPSymbol(ascii("three").buffer()), new AMQPString("four"));
+        in.setValue(new MapEntries());
+        in.getValue().add(new AMQPSymbol(ascii("one").buffer()), new AMQPString("two"));
+        in.getValue().add(new AMQPSymbol(ascii("three").buffer()), new AMQPString("four"));
         ApplicationProperties out = writeRead(in);
         assertEquals(in.toString(), out.toString());
     }
