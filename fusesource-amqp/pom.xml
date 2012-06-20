@@ -26,14 +26,14 @@
     <relativePath>..</relativePath>
   </parent>
 
-  <artifactId>fusemq-apollo-amqp-codec</artifactId>
+  <artifactId>fusesource-amqp</artifactId>
   <packaging>jar</packaging>
 
   <name>${project.artifactId}</name>
-  <description>Fuse Extra ::Java API for the AMQP domain object model and associated encoders/decoders</description>
+  <description>Java API for the AMQP Protocol</description>
 
   <properties>
-    <hawtdispatch-version>1.9-SNAPSHOT</hawtdispatch-version>
+    <!-- <hawtdispatch-version>1.9-SNAPSHOT</hawtdispatch-version> -->
   </properties>
 
   <dependencies>
@@ -45,7 +45,7 @@
     </dependency>
     <dependency>
       <groupId>org.fusesource.hawtdispatch</groupId>
-      <artifactId>hawtdispatch-scala</artifactId>
+      <artifactId>hawtdispatch-transport</artifactId>
       <version>${hawtdispatch-version}</version>
     </dependency>
 
@@ -65,10 +65,10 @@
 
       <plugin>
         <groupId>org.fusesource.fuse-extra</groupId>
-        <artifactId>fusemq-apollo-amqp-generator</artifactId>
+        <artifactId>fusesource-amqp-generator</artifactId>
         <version>99-master-SNAPSHOT</version>
         <configuration>
-          <mainSourceDirectory>${basedir}/src/main/resources/amqp</mainSourceDirectory>
+          <mainSourceDirectory>${basedir}/src/main/amqp-specs</mainSourceDirectory>
         </configuration>
         <executions>
           <execution>
