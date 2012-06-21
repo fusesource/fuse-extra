@@ -28,6 +28,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 
 import static com.sun.codemodel.JExpr.*;
+import static com.sun.codemodel.JExpr.lit;
 import static org.fusesource.amqp.generator.Utilities.sanitize;
 import static org.fusesource.amqp.generator.Utilities.toJavaClassName;
 import static org.fusesource.amqp.generator.Utilities.toStaticName;
@@ -133,25 +134,29 @@ public class DescribedType extends AmqpDefinedType {
         
         JMethod toString2 = cls().method(JMod.PUBLIC, cm.ref("java.lang.String"), "toString");
         toString2.param(String.class, "indent");
-        toString2.body().decl(cm.ref("java.lang.String"), "rc", lit("["+toJavaClassName(type.getName()) + ", {\n"));
+
+        toString2.body().decl(cm.ref("java.lang.String"), "rc", lit(""));
         for (int i = 0; i < amqpFields.size(); i++) {
             Attribute attr = amqpFields.get(i);
-            String eol = ",\n";
-            if(i+1 == amqpFields.size()) {
-                eol = "\n";
-            }
+
             if ( attr.attribute.type().isArray() ) {
-                toString2.body()._if(_this().ref(attr.attribute).ne(_null()))._then().assignPlus(ref("rc"), ref("indent").plus(lit("  "+attr.attribute.name() + ":").plus(cm.ref("java.util.Arrays").staticInvoke("toString").arg(_this().ref(attr.attribute))).plus(lit(eol))));
+                JBlock block = toString2.body()._if(_this().ref(attr.attribute).ne(_null()))._then().block();
+                block._if(ref("rc").invoke("length").ne(lit(0)))._then().assignPlus(ref("rc"), lit(",\n"));
+                block.assignPlus(ref("rc"), ref("indent").plus(lit("   " + attr.attribute.name() + ":").plus(cm.ref("java.util.Arrays").staticInvoke("toString").arg(_this().ref(attr.attribute)))));
             } else {
                 JExpression value = _this().ref(attr.attribute);
                 if ( generator.getMapping().get(attr.type) == null ) {
-                    value = value.invoke("toString").arg(ref("indent").plus(lit("  ")));
+                    value = value.invoke("toString").arg(ref("indent").plus(lit("   ")));
                 }
-                toString2.body()._if(_this().ref(attr.attribute).ne(_null()))._then().assignPlus(ref("rc"), ref("indent").plus(lit("  "+attr.attribute.name() + ":").plus(value).plus(lit(eol))));
+                JBlock block = toString2.body()._if(_this().ref(attr.attribute).ne(_null()))._then().block();
+                block._if(ref("rc").invoke("length").ne(lit(0)))._then().assignPlus(ref("rc"), lit(",\n"));
+                block.assignPlus(ref("rc"), ref("indent").plus(lit("   " + attr.attribute.name() + ":").plus(value)));
             }
         }
-        toString2.body().assignPlus(ref("rc"), ref("indent").plus(lit("}]")));
-        toString2.body()._return(ref("rc"));
+        toString2.body()._if(ref("rc").invoke("length").ne(lit(0)))._then().
+                assign(ref("rc"), lit(", {\n").plus(ref("rc").plus(lit("}"))));
+
+        toString2.body()._return(lit("[" + toJavaClassName(type.getName())).plus(ref("rc")).plus(lit("]")));
     }
 
     public boolean isComposite() {

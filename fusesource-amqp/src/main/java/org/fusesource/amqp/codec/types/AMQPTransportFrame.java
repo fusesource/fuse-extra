@@ -239,16 +239,18 @@ public class AMQPTransportFrame implements AMQPFrame {
     }
 
     public String toString() {
+        return toString("");
+    }
+    public String toString(String indent) {
         if( performative!=null && payload.length()==0 && getType()==0) {
-            return performative.toString();
+            return performative.toString(indent);
         }
         return "[AMQPTransportFrame, {\n"+
-                "  frameSize:"+getFrameSize()+",\n" +
-                "  dataOffset:"+getDoff()+",\n" +
-                "  channel:"+getChannel()+",\n" +
-                "  type:"+getType()+",\n" +
-                "  performative:"+performative.toString("  ")+",\n" +
-                "  payload:"+payload+"\n" +
-                "}]";
+                indent+"   frameSize:"+getFrameSize()+",\n" +
+                indent+"   dataOffset:"+getDoff()+",\n" +
+                indent+"   channel:"+getChannel()+",\n" +
+                indent+"   type:"+getType()+",\n" +
+                indent+"   performative:"+performative.toString(indent+"  ")+",\n" +
+                indent+"   payload:"+payload+"}]";
     }
 }

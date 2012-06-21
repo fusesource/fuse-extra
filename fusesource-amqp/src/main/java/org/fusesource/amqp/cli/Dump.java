@@ -18,6 +18,7 @@
 package org.fusesource.amqp.cli;
 
 import org.fusesource.amqp.codec.AMQPProtocolCodec;
+import org.fusesource.amqp.codec.types.AMQPTransportFrame;
 
 import java.io.EOFException;
 import java.io.FileInputStream;
@@ -72,7 +73,14 @@ public class Dump {
                 frame = readAMQPFrame(codec);
                 while (frame != null) {
                     long next_pos = codec.getReadCounter() - codec.getReadBytesPendingDecode();
-                    println("@" + pos + " " + frame);
+                    String label = String.format("@%08d ", pos);
+                    System.out.print(label);
+                    if( frame instanceof AMQPTransportFrame) {
+                        String indent = label.replaceAll(".", " ");
+                        println(((AMQPTransportFrame)frame).toString(indent));
+                    } else {
+                        println(frame);
+                    }
                     pos = next_pos;
                     frame = readAMQPFrame(codec);
                 }
@@ -117,7 +125,7 @@ public class Dump {
         println("");
     }
 
-    private static void println(String msg) {
+    private static void println(Object msg) {
         System.out.println(msg);
     }
 
