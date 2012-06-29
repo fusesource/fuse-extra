@@ -49,6 +49,7 @@ public class Sender extends Endpoint implements AMQPSender {
         if( flow.getLinkCredit()!=null ) {
             linkCredit = flow.getLinkCredit();
             current().pumpOverflow();
+            options.getListener().onTransfer();
         }
     }
 

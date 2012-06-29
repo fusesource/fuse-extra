@@ -28,7 +28,7 @@ import java.util.Map;
  */
 public class AMQPConnectionOptions {
 
-    private Logger logger = new ConsoleLogger();
+    private Logger logger = new Logger();
 
     private String containerId;
     private String hostName;

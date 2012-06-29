@@ -58,6 +58,7 @@ public class Receiver extends Endpoint implements AMQPReceiver {
         if( flow.getAvailable()!=null ) {
             deliveryCount = flow.getAvailable();
         }
+        options.getListener().onTransfer();
     }
 
     protected void processTransferFrame(Session source, final Transfer transfer, Buffer payload) throws Exception {
