@@ -17,24 +17,19 @@
 
 package org.fusesource.amqp.codec;
 
-import org.fusesource.amqp.codec.api.*;
-import org.fusesource.amqp.codec.interfaces.AMQPType;
-import org.fusesource.amqp.codec.types.*;
-import org.fusesource.amqp.codec.types.Properties;
+import org.fusesource.amqp.types.*;
 import org.fusesource.hawtbuf.Buffer;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import static org.fusesource.amqp.codec.TestSupport.encodeDecode;
-import static org.fusesource.amqp.codec.api.MessageFactory.createAnnotatedMessage;
-import static org.fusesource.amqp.codec.api.MessageFactory.createDataMessage;
-import static org.fusesource.amqp.codec.api.MessageFactory.createValueMessage;
-import static org.fusesource.amqp.codec.marshaller.MessageSupport.createSequenceMessage;
-import static org.fusesource.amqp.codec.marshaller.MessageSupport.*;
+import static org.fusesource.amqp.types.MessageSupport.envelope;
+import static org.fusesource.amqp.types.MessageSupport.message;
 import static org.fusesource.hawtbuf.Buffer.ascii;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 /**
  *
@@ -43,34 +38,34 @@ public class MessageTest {
 
     @Test
     public void testEncodeDecodeEmptyMessage() throws Exception {
-        AnnotatedMessage in = createAnnotatedMessage();
-        AnnotatedMessage out = encodeDecode(in);
+        Envelope in = envelope();
+        Envelope out = encodeDecode(in);
         assertEquals(in.toString(), out.toString());
     }
 
     @Test
     public void testEncodeDecodeSimpleDataMessage() throws Exception {
-        DataMessage message = createDataMessage(ascii("Hello world!").buffer());
-        AnnotatedMessage in = createAnnotatedMessage(message);
-        AnnotatedMessage out = encodeDecode(in);
+        Message message = message(ascii("Hello world!").buffer());
+        Envelope in = envelope(message);
+        Envelope out = encodeDecode(in);
         assertEquals(in.toString(), out.toString());
     }
 
     @Test
     public void testEncodeDecodeMultipartDataMessage() throws Exception {
-        BareMessage msg = createDataMessage(Buffer.ascii("Hello").buffer(),
+        Message msg = message(Buffer.ascii("Hello").buffer(),
                 ascii("World").buffer(),
                 ascii("!").buffer());
-        AnnotatedMessage in = createAnnotatedMessage(msg);
-        AnnotatedMessage out = encodeDecode(in);
+        Envelope in = envelope(msg);
+        Envelope out = encodeDecode(in);
         assertEquals(in.toString(), out.toString());
     }
 
     @Test
     public void testEncodeDecodeSimpleValueMessage() throws Exception {
-        BareMessage msg = createValueMessage(new AMQPString("Hello World!"));
-        AnnotatedMessage in = createAnnotatedMessage(msg);
-        AnnotatedMessage out = encodeDecode(in);
+        Message msg = message(new AMQPString("Hello World!"));
+        Envelope in = envelope(msg);
+        Envelope out = encodeDecode(in);
         assertEquals(in.toString(), out.toString());
     }
 
@@ -80,9 +75,9 @@ public class MessageTest {
         list.add(new AMQPString("Hello"));
         list.add(new AMQPString("World"));
         list.add(new AMQPChar('!'));
-        BareMessage msg = createSequenceMessage(new AMQPSequence(list));
-        AnnotatedMessage in = createAnnotatedMessage(msg);
-        AnnotatedMessage out = encodeDecode(in);
+        Message msg = message(new AMQPSequence(list));
+        Envelope in = envelope(msg);
+        Envelope out = encodeDecode(in);
         assertEquals(in.toString(), out.toString());
     }
 
@@ -98,30 +93,21 @@ public class MessageTest {
             }
         }
 
-        BareMessage msg = MessageFactory.createSequenceMessage(list);
-        AnnotatedMessage in = createAnnotatedMessage(msg);
-        AnnotatedMessage out = encodeDecode(in);
+        Message msg = message(list);
+        Envelope in = envelope(msg);
+        Envelope out = encodeDecode(in);
         assertEquals(in.toString(), out.toString());
 
     }
 
     @Test
     public void testEncodeDecodeLessSimpleMessage() throws Exception {
-        AnnotatedMessage in = getMessage();
-        AnnotatedMessage out = encodeDecode(in);
+        Envelope in = getMessage();
+        Envelope out = encodeDecode(in);
         assertEquals(in.toString(), out.toString());
     }
 
-    @Test
-    public void testScanMessageForSection() throws Exception {
-        AnnotatedMessage in = getMessage();
-        Buffer buffer = toBuffer(in);
-        Footer footer = getFooter(buffer);
-        System.out.printf("Got : %s\n", footer);
-        assertNotNull(footer);
-    }
-
-    private static AnnotatedMessage getMessage() {
+    private static Envelope getMessage() {
 
         ArrayList<AMQPString> payload1 = new ArrayList<AMQPString>();
         ArrayList<AMQPString> payload2 = new ArrayList<AMQPString>();
@@ -130,9 +116,14 @@ public class MessageTest {
             payload1.add(new AMQPString("payload item " + i));
             payload2.add(new AMQPString("and payload item " + (i + 10)));
         }
-        SequenceMessage msg = MessageFactory.createSequenceMessage(
-                new AMQPSequence(payload1),
-                new AMQPSequence(payload2),
+
+        AMQPSequence body = new AMQPSequence();
+        body.setValue(new ArrayList());
+        body.getValue().addAll(payload1);
+        body.getValue().addAll(payload2);
+
+        Message msg = message(
+                body,
                 new Properties(null,
                         ascii("foo").buffer(),
                         new AMQPString("nowhere"),
@@ -144,7 +135,7 @@ public class MessageTest {
                         null,
                         new Date()));
 
-        AnnotatedMessage in = createAnnotatedMessage(msg);
+        Envelope in = envelope(msg);
         in.setDeliveryAnnotations(new DeliveryAnnotations());
         in.getDeliveryAnnotations().setValue(new MapEntries());
         in.getDeliveryAnnotations().getValue().add(new AMQPSymbol(Footer.CONSTRUCTOR.getBuffer()), new AMQPString("Hi!"));

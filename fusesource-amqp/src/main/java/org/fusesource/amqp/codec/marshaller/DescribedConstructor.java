@@ -17,8 +17,8 @@
 
 package org.fusesource.amqp.codec.marshaller;
 
-import org.fusesource.amqp.codec.types.AMQPSymbol;
-import org.fusesource.amqp.codec.types.AMQPULong;
+import org.fusesource.amqp.types.AMQPSymbol;
+import org.fusesource.amqp.types.AMQPULong;
 import org.fusesource.hawtbuf.Buffer;
 import org.fusesource.hawtbuf.DataByteArrayOutputStream;
 

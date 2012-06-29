@@ -18,8 +18,6 @@
 package org.fusesource.amqp.codec;
 
 import org.fusesource.amqp.codec.marshaller.AMQPProtocolHeaderCodec;
-import org.fusesource.amqp.codec.types.AMQPHeaderFrame;
-import org.fusesource.amqp.codec.types.AMQPTransportFrame;
 import org.fusesource.hawtbuf.Buffer;
 import org.fusesource.hawtdispatch.transport.AbstractProtocolCodec;
 

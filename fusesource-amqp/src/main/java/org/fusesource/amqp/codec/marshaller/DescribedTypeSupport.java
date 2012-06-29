@@ -20,7 +20,7 @@ package org.fusesource.amqp.codec.marshaller;
 import java.io.DataInput;
 import java.io.DataOutput;
 
-import static org.fusesource.amqp.codec.types.AMQPList.*;
+import static org.fusesource.amqp.types.AMQPList.*;
 
 /**
  *

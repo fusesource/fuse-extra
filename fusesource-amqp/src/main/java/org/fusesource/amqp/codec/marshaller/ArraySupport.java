@@ -17,7 +17,7 @@
 
 package org.fusesource.amqp.codec.marshaller;
 
-import org.fusesource.amqp.codec.interfaces.AMQPType;
+import org.fusesource.amqp.types.AMQPType;
 
 import java.io.DataOutput;
 

@@ -17,10 +17,8 @@
 
 package org.fusesource.amqp.codec;
 
-import org.fusesource.amqp.codec.api.AnnotatedMessage;
-import org.fusesource.amqp.codec.api.BareMessage;
-import org.fusesource.amqp.codec.api.MessageFactory;
-import org.fusesource.amqp.codec.types.*;
+import org.fusesource.amqp.types.Message;
+import org.fusesource.amqp.types.*;
 import org.fusesource.hawtbuf.Buffer;
 import org.junit.Assert;
 import org.junit.Test;
@@ -33,6 +31,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import static org.fusesource.amqp.codec.TestSupport.encodeDecode;
 import static org.fusesource.amqp.codec.TestSupport.writeRead;
+import static org.fusesource.amqp.types.MessageSupport.*;
 
 /**
  *
@@ -48,15 +47,14 @@ public class CodecPerfTest {
         execute(1000000, new TestLoop() {
 
             public void loop(Long iteration) throws Exception {
-                BareMessage message = MessageFactory.createDataMessage(
+                Message message = message(
                         Buffer.ascii("Message iteration " + iteration),
                         new Properties(new MessageIDString(iteration.toString()), Buffer.ascii("user1"), new AMQPString("foo"), null, null, null, null, null, null, new Date())
 
                 );
 
-                AnnotatedMessage annotatedMessage = MessageFactory.createAnnotatedMessage(message, new Header(false, null, null, null, 0L));
-
-                AnnotatedMessage out = encodeDecode(annotatedMessage, false);
+                Envelope annotatedMessage = envelope(message, new Header(false, null, null, null, 0L));
+                Envelope out = encodeDecode(annotatedMessage, false);
             }
         });
 

@@ -121,7 +121,7 @@ public class DescribedType extends AmqpDefinedType {
                                 .arg(cls().dotclass())
                 );
 
-                JConditional block = cls().init()._if(cm.ref("java.lang.Boolean").staticInvoke("parseBoolean").arg(cm.ref("java.lang.System").staticInvoke("getProperty").arg(lit(generator.getPackagePrefix() + ".UseSymbolicID"))));
+                JConditional block = cls().init()._if(cm.ref("java.lang.Boolean").staticInvoke("parseBoolean").arg(cm.ref("java.lang.System").staticInvoke("getProperty").arg(lit(generator.getCodecPackagePrefix() + ".UseSymbolicID"))));
                 block._then().assign(ref("CONSTRUCTOR"), ref("SYMBOLIC_CONSTRUCTOR"));
                 block._else().assign(ref("CONSTRUCTOR"), ref("NUMERIC_CONSTRUCTOR"));
             }

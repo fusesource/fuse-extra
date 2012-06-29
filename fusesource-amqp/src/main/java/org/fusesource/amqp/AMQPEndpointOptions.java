@@ -17,33 +17,31 @@
 
 package org.fusesource.amqp;
 
-import org.fusesource.amqp.codec.types.ReceiverSettleMode;
-import org.fusesource.amqp.codec.types.SenderSettleMode;
-import org.fusesource.amqp.codec.types.Source;
-import org.fusesource.amqp.codec.types.Target;
+import org.fusesource.amqp.callback.AMQPEndpoint;
+import org.fusesource.amqp.types.*;
 
 /**
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 public class AMQPEndpointOptions {
 
-    public String name;
-    public Source source;
-    public Target target;
-    public long maxMessageSize = 10*1024*1024;
-    public SenderSettleMode senderSettleMode = SenderSettleMode.SETTLED;
-    public ReceiverSettleMode receiverSettleMode = ReceiverSettleMode.FIRST;
+    String name;
+    Source source;
+    Target target;
+    long maxMessageSize = 10*1024*1024;
+    SenderSettleMode senderSettleMode = SenderSettleMode.SETTLED;
+    ReceiverSettleMode receiverSettleMode = ReceiverSettleMode.FIRST;
 
-    public AMQPEndpoint.Listener listener = new AMQPEndpoint.Listener();
+    private AMQPEndpoint.Listener listener = new AMQPEndpoint.Listener();
 
     public AMQPEndpointOptions() {}
     public AMQPEndpointOptions(AMQPEndpointOptions other) {
-        this.name = other.name;
-        this.source = other.source;
-        this.target = other.target;
-        this.senderSettleMode = other.senderSettleMode;
-        this.receiverSettleMode = other.receiverSettleMode;
-        this.listener = other.listener;
+        this.setName(other.getName());
+        this.setSource(other.getSource());
+        this.setTarget(other.getTarget());
+        this.setSenderSettleMode(other.getSenderSettleMode());
+        this.setReceiverSettleMode(other.getReceiverSettleMode());
+        this.setListener(other.getListener());
     }
 
     public AMQPEndpointOptions copy() {
@@ -53,18 +51,80 @@ public class AMQPEndpointOptions {
     public void setQoS(AMQPQoS qos) {
         switch(qos) {
             case AT_MOST_ONCE:
-                senderSettleMode   = SenderSettleMode.SETTLED;
-                receiverSettleMode = ReceiverSettleMode.FIRST;
+                setSenderSettleMode(SenderSettleMode.SETTLED);
+                setReceiverSettleMode(ReceiverSettleMode.FIRST);
                 break;
             case AT_LEAST_ONCE:
-                senderSettleMode = SenderSettleMode.MIXED;
-                receiverSettleMode = ReceiverSettleMode.FIRST;
+                setSenderSettleMode(SenderSettleMode.MIXED);
+                setReceiverSettleMode(ReceiverSettleMode.FIRST);
                 break;
             case EXACTLY_ONCE:
-                senderSettleMode = SenderSettleMode.MIXED;
-                receiverSettleMode = ReceiverSettleMode.SECOND;
+                setSenderSettleMode(SenderSettleMode.MIXED);
+                setReceiverSettleMode(ReceiverSettleMode.SECOND);
                 break;
         }
     }
 
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Source getSource() {
+        return source;
+    }
+
+    public void setSource(Source source) {
+        this.source = source;
+    }
+    public void setSource(String source) {
+        setSource(new Source(new AMQPString(source)));
+    }
+
+    public Target getTarget() {
+        return target;
+    }
+
+    public void setTarget(Target target) {
+        this.target = target;
+    }
+    public void setTarget(String target) {
+        setTarget(new Target(new AMQPString(target)));
+    }
+
+    public long getMaxMessageSize() {
+        return maxMessageSize;
+    }
+
+    public void setMaxMessageSize(long maxMessageSize) {
+        this.maxMessageSize = maxMessageSize;
+    }
+
+    public SenderSettleMode getSenderSettleMode() {
+        return senderSettleMode;
+    }
+
+    public void setSenderSettleMode(SenderSettleMode senderSettleMode) {
+        this.senderSettleMode = senderSettleMode;
+    }
+
+    public ReceiverSettleMode getReceiverSettleMode() {
+        return receiverSettleMode;
+    }
+
+    public void setReceiverSettleMode(ReceiverSettleMode receiverSettleMode) {
+        this.receiverSettleMode = receiverSettleMode;
+    }
+
+    public AMQPEndpoint.Listener getListener() {
+        return listener;
+    }
+
+    public void setListener(AMQPEndpoint.Listener listener) {
+        this.listener = listener;
+    }
 }

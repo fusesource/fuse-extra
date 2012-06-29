@@ -17,9 +17,9 @@
 
 package org.fusesource.amqp.codec.marshaller;
 
-import org.fusesource.amqp.codec.interfaces.AMQPType;
-import org.fusesource.amqp.codec.types.AMQPSymbol;
-import org.fusesource.amqp.codec.types.AMQPULong;
+import org.fusesource.amqp.types.AMQPType;
+import org.fusesource.amqp.types.AMQPSymbol;
+import org.fusesource.amqp.types.AMQPULong;
 
 import java.io.DataInput;
 import java.io.EOFException;

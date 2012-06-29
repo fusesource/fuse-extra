@@ -17,17 +17,59 @@
 
 package org.fusesource.amqp;
 
+import org.fusesource.amqp.types.MessageAnnotations;
+
 /**
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 public class AMQPSenderOptions extends AMQPEndpointOptions {
 
+    Boolean durable;
+    Long ttl;
+    Short priority;
+    MessageAnnotations messageAnnotations;
+
     public AMQPSenderOptions() {}
     public AMQPSenderOptions(AMQPSenderOptions other) {
         super(other);
+        this.durable = other.durable;
+        this.ttl = other.ttl;
+        this.priority = other.priority;
+        this.messageAnnotations = messageAnnotations;
     }
 
     public AMQPSenderOptions copy() {
         return new AMQPSenderOptions(this);
+    }
+
+    public Boolean getDurable() {
+        return durable;
+    }
+
+    public void setDurable(Boolean durable) {
+        this.durable = durable;
+    }
+
+    public Long getTTL() {
+        return ttl;
+    }
+
+    public void setTTL(Long ttl) {
+        this.ttl = ttl;
+    }
+
+    public Short getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Short priority) {
+        this.priority = priority;
+    }
+
+    public MessageAnnotations getMessageAnnotations() {
+        return messageAnnotations;
+    }
+    public void setMessageAnnotations(MessageAnnotations messageAnnotations) {
+        this.messageAnnotations = messageAnnotations;
     }
 }

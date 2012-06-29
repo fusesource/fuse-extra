@@ -17,9 +17,8 @@
 
 package org.fusesource.amqp.codec.marshaller;
 
-import org.fusesource.amqp.codec.interfaces.AMQPType;
-import org.fusesource.amqp.codec.interfaces.Sizer;
-import org.fusesource.amqp.codec.types.MapEntries;
+import org.fusesource.amqp.types.AMQPType;
+import org.fusesource.amqp.types.MapEntries;
 import org.fusesource.hawtbuf.Buffer;
 
 import java.io.UnsupportedEncodingException;
@@ -30,29 +29,29 @@ import java.util.*;
 import static org.fusesource.amqp.codec.marshaller.ArraySupport.getArrayBodySize;
 import static org.fusesource.amqp.codec.marshaller.ArraySupport.getArrayConstructorSize;
 import static org.fusesource.amqp.codec.marshaller.TypeRegistry.NULL_FORMAT_CODE;
-import static org.fusesource.amqp.codec.types.AMQPArray.*;
-import static org.fusesource.amqp.codec.types.AMQPBinary.*;
-import static org.fusesource.amqp.codec.types.AMQPBoolean.*;
-import static org.fusesource.amqp.codec.types.AMQPByte.BYTE_WIDTH;
-import static org.fusesource.amqp.codec.types.AMQPChar.CHAR_UTF32_WIDTH;
-import static org.fusesource.amqp.codec.types.AMQPDecimal128.DECIMAL128_IEEE_754_WIDTH;
-import static org.fusesource.amqp.codec.types.AMQPDecimal32.DECIMAL32_IEEE_754_WIDTH;
-import static org.fusesource.amqp.codec.types.AMQPDecimal64.DECIMAL64_IEEE_754_WIDTH;
-import static org.fusesource.amqp.codec.types.AMQPDouble.DOUBLE_IEEE_754_WIDTH;
-import static org.fusesource.amqp.codec.types.AMQPFloat.FLOAT_IEEE_754_WIDTH;
-import static org.fusesource.amqp.codec.types.AMQPInt.*;
-import static org.fusesource.amqp.codec.types.AMQPList.*;
-import static org.fusesource.amqp.codec.types.AMQPLong.*;
-import static org.fusesource.amqp.codec.types.AMQPMap.*;
-import static org.fusesource.amqp.codec.types.AMQPShort.SHORT_WIDTH;
-import static org.fusesource.amqp.codec.types.AMQPString.*;
-import static org.fusesource.amqp.codec.types.AMQPSymbol.*;
-import static org.fusesource.amqp.codec.types.AMQPTimestamp.TIMESTAMP_MS64_WIDTH;
-import static org.fusesource.amqp.codec.types.AMQPUByte.UBYTE_WIDTH;
-import static org.fusesource.amqp.codec.types.AMQPUInt.*;
-import static org.fusesource.amqp.codec.types.AMQPULong.*;
-import static org.fusesource.amqp.codec.types.AMQPUShort.USHORT_WIDTH;
-import static org.fusesource.amqp.codec.types.AMQPUUID.UUID_WIDTH;
+import static org.fusesource.amqp.types.AMQPArray.*;
+import static org.fusesource.amqp.types.AMQPBinary.*;
+import static org.fusesource.amqp.types.AMQPBoolean.*;
+import static org.fusesource.amqp.types.AMQPByte.BYTE_WIDTH;
+import static org.fusesource.amqp.types.AMQPChar.CHAR_UTF32_WIDTH;
+import static org.fusesource.amqp.types.AMQPDecimal128.DECIMAL128_IEEE_754_WIDTH;
+import static org.fusesource.amqp.types.AMQPDecimal32.DECIMAL32_IEEE_754_WIDTH;
+import static org.fusesource.amqp.types.AMQPDecimal64.DECIMAL64_IEEE_754_WIDTH;
+import static org.fusesource.amqp.types.AMQPDouble.DOUBLE_IEEE_754_WIDTH;
+import static org.fusesource.amqp.types.AMQPFloat.FLOAT_IEEE_754_WIDTH;
+import static org.fusesource.amqp.types.AMQPInt.*;
+import static org.fusesource.amqp.types.AMQPList.*;
+import static org.fusesource.amqp.types.AMQPLong.*;
+import static org.fusesource.amqp.types.AMQPMap.*;
+import static org.fusesource.amqp.types.AMQPShort.SHORT_WIDTH;
+import static org.fusesource.amqp.types.AMQPString.*;
+import static org.fusesource.amqp.types.AMQPSymbol.*;
+import static org.fusesource.amqp.types.AMQPTimestamp.TIMESTAMP_MS64_WIDTH;
+import static org.fusesource.amqp.types.AMQPUByte.UBYTE_WIDTH;
+import static org.fusesource.amqp.types.AMQPUInt.*;
+import static org.fusesource.amqp.types.AMQPULong.*;
+import static org.fusesource.amqp.types.AMQPUShort.USHORT_WIDTH;
+import static org.fusesource.amqp.types.AMQPUUID.UUID_WIDTH;
 
 /**
  *

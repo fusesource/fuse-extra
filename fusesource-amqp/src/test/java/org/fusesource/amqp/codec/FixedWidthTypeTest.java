@@ -17,7 +17,7 @@
 
 package org.fusesource.amqp.codec;
 
-import org.fusesource.amqp.codec.types.*;
+import org.fusesource.amqp.types.*;
 import org.junit.Test;
 
 import java.math.BigInteger;

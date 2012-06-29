@@ -17,17 +17,14 @@
 
 package org.fusesource.amqp.codec;
 
-import org.fusesource.amqp.codec.api.AnnotatedMessage;
-import org.fusesource.amqp.codec.interfaces.AMQPType;
-import org.fusesource.amqp.codec.marshaller.MessageSupport;
+import org.fusesource.amqp.types.*;
 import org.fusesource.amqp.codec.marshaller.TypeReader;
-import org.fusesource.amqp.codec.types.AMQPTransportFrame;
-import org.fusesource.amqp.codec.types.AnnotatedMessageImpl;
+import org.fusesource.amqp.types.Envelope;
 import org.fusesource.hawtbuf.Buffer;
 import org.fusesource.hawtbuf.DataByteArrayInputStream;
 import org.fusesource.hawtbuf.DataByteArrayOutputStream;
 
-import static org.fusesource.amqp.codec.marshaller.MessageSupport.decodeAnnotatedMessage;
+import static org.fusesource.amqp.types.MessageSupport.decodeEnvelope;
 
 /**
  *
@@ -102,12 +99,12 @@ public class TestSupport {
         return rc;
     }
 
-    static AnnotatedMessage encodeDecode(AnnotatedMessage in) throws Exception {
+    static Envelope encodeDecode(Envelope in) throws Exception {
         return encodeDecode(in, true);
     }
 
-    static AnnotatedMessage encodeDecode(AnnotatedMessage in, boolean display) throws Exception {
-        long size = ((AnnotatedMessageImpl) in).size();
+    static Envelope encodeDecode(Envelope in, boolean display) throws Exception {
+        long size = ((Envelope) in).size();
 
         if ( size < MAX_SIZE && display ) {
             System.out.printf("\n%s", in);
@@ -118,7 +115,7 @@ public class TestSupport {
             System.out.printf("\n%s", string(encoded.data));
         }
 
-        AnnotatedMessage out = decodeAnnotatedMessage(encoded);
+        Envelope out = decodeEnvelope(encoded);
         if ( size < MAX_SIZE && display ) {
             System.out.printf("\n%s\n", out);
         }

@@ -41,7 +41,7 @@ public class RestrictedType extends AmqpDefinedType {
     @Override
     protected void init() {
         if ( type.getProvides() != null ) {
-            cls()._implements(cm.ref(generator.getInterfaces() + "." + toJavaClassName(type.getProvides())));
+            cls()._implements(cm.ref(generator.getInterfaces() + ".AMQP" + toJavaClassName(type.getProvides())));
         } else {
             cls()._implements(cm.ref(generator.getAmqpBaseType()));
         }

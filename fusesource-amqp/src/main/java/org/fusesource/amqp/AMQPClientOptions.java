@@ -17,6 +17,7 @@
 
 package org.fusesource.amqp;
 
+import org.fusesource.amqp.callback.AMQP;
 import org.fusesource.hawtdispatch.DispatchQueue;
 import org.fusesource.hawtdispatch.transport.TcpTransport;
 

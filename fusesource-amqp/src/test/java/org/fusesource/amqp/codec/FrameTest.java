@@ -17,18 +17,15 @@
 
 package org.fusesource.amqp.codec;
 
-import org.fusesource.amqp.codec.api.AnnotatedMessage;
-import org.fusesource.amqp.codec.api.MessageFactory;
-import org.fusesource.amqp.codec.api.ValueMessage;
-import org.fusesource.amqp.codec.marshaller.MessageSupport;
-import org.fusesource.amqp.codec.types.AMQPString;
-import org.fusesource.amqp.codec.types.AMQPTransportFrame;
-import org.fusesource.amqp.codec.types.Begin;
-import org.fusesource.amqp.codec.types.Transfer;
+import org.fusesource.amqp.types.*;
+import org.fusesource.amqp.types.AMQPString;
+import org.fusesource.amqp.types.Begin;
+import org.fusesource.amqp.types.Transfer;
 import org.fusesource.hawtbuf.Buffer;
 import org.fusesource.hawtbuf.DataByteArrayInputStream;
 import org.fusesource.hawtbuf.DataByteArrayOutputStream;
 import org.junit.Test;
+import static org.fusesource.amqp.types.MessageSupport.*;
 
 import static org.junit.Assert.assertEquals;
 
@@ -50,11 +47,11 @@ public class FrameTest {
 
     @Test
     public void testTransferFrame() throws Exception {
-        ValueMessage message = MessageFactory.createValueMessage(new AMQPString("HelloWorld!"));
+        Message message = message(new AMQPString("HelloWorld!"));
         Transfer transfer = new Transfer(0L, 0L, Buffer.ascii("0").buffer());
-        AnnotatedMessage annotatedMessage = MessageFactory.createAnnotatedMessage(message);
+        Envelope Envelope = envelope(message);
 
-        AMQPTransportFrame frame = new AMQPTransportFrame(0, transfer, MessageSupport.toBuffer(annotatedMessage));
+        AMQPTransportFrame frame = new AMQPTransportFrame(0, transfer, MessageSupport.toBuffer(Envelope));
 
         AMQPTransportFrame outFrame = TestSupport.encodeDecode(frame);
 
@@ -62,19 +59,19 @@ public class FrameTest {
 
         System.out.printf("Transfer : %s\n", outTransfer);
 
-        AnnotatedMessage msg = MessageSupport.decodeAnnotatedMessage(outFrame.getPayload());
+        Envelope msg = MessageSupport.decodeEnvelope(outFrame.getPayload());
 
         System.out.printf("Msg : %s\n", msg);
         assertEquals(transfer.toString(), outTransfer.toString());
-        assertEquals(annotatedMessage.toString(), msg.toString());
+        assertEquals(Envelope.toString(), msg.toString());
     }
 
     @Test
     public void createFrameFromHeaderAndBody() throws Exception {
-        ValueMessage message = MessageFactory.createValueMessage(new AMQPString("HelloWorld!"));
+        Message message = message(new AMQPString("HelloWorld!"));
         Transfer transfer = new Transfer(0L, 0L, Buffer.ascii("0").buffer());
-        AnnotatedMessage annotatedMessage = MessageFactory.createAnnotatedMessage(message);
-        AMQPTransportFrame inFrame = new AMQPTransportFrame(0, transfer, MessageSupport.toBuffer(annotatedMessage));
+        Envelope Envelope = envelope(message);
+        AMQPTransportFrame inFrame = new AMQPTransportFrame(0, transfer, MessageSupport.toBuffer(Envelope));
 
         DataByteArrayOutputStream out = new DataByteArrayOutputStream((int)inFrame.getSize());
         inFrame.write(out);
@@ -91,8 +88,8 @@ public class FrameTest {
         AMQPTransportFrame outFrame = new AMQPTransportFrame(header, body);
 
         Transfer outTransfer = (Transfer)outFrame.getPerformative();
-        AnnotatedMessage msg = MessageSupport.decodeAnnotatedMessage(outFrame.getPayload());
+        Envelope msg = MessageSupport.decodeEnvelope(outFrame.getPayload());
         assertEquals(transfer.toString(), outTransfer.toString());
-        assertEquals(annotatedMessage.toString(), msg.toString());
+        assertEquals(Envelope.toString(), msg.toString());
     }
 }

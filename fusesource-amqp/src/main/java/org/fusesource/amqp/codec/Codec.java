@@ -17,7 +17,7 @@
 
 package org.fusesource.amqp.codec;
 
-import org.fusesource.amqp.codec.interfaces.AMQPType;
+import org.fusesource.amqp.types.AMQPType;
 import org.fusesource.hawtbuf.Buffer;
 import org.fusesource.hawtbuf.DataByteArrayOutputStream;
 

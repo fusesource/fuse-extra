@@ -17,9 +17,7 @@
 
 package org.fusesource.amqp.codec.marshaller;
 
-import org.fusesource.amqp.codec.interfaces.AMQPType;
-import org.fusesource.amqp.codec.interfaces.PrimitiveEncoder;
-import org.fusesource.amqp.codec.types.*;
+import org.fusesource.amqp.types.*;
 import org.fusesource.hawtbuf.Buffer;
 import org.fusesource.hawtbuf.UTF8Buffer;
 

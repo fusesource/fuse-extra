@@ -17,8 +17,8 @@
 
 package org.fusesource.amqp.codec.marshaller;
 
+import org.fusesource.amqp.codec.AMQPHeaderFrame;
 import org.fusesource.amqp.codec.AMQPDefinitions;
-import org.fusesource.amqp.codec.types.AMQPHeaderFrame;
 import org.fusesource.hawtbuf.codec.Codec;
 
 import java.io.DataInput;

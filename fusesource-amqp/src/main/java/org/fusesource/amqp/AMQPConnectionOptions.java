@@ -17,7 +17,8 @@
 
 package org.fusesource.amqp;
 
-import org.fusesource.amqp.codec.types.AMQPSymbol;
+import org.fusesource.amqp.callback.AMQPConnection;
+import org.fusesource.amqp.types.AMQPSymbol;
 import org.fusesource.hawtdispatch.transport.Transport;
 
 import java.util.Map;
@@ -27,9 +28,9 @@ import java.util.Map;
  */
 public class AMQPConnectionOptions {
 
-    Logger logger = new ConsoleLogger();
+    private Logger logger = new ConsoleLogger();
 
-    String containerId;
+    private String containerId;
     private String hostName;
     private long idleTimeout = 90000;
     private int maxFrameSize = 1024*1024*1024*2 - 1;
@@ -44,43 +45,29 @@ public class AMQPConnectionOptions {
     private AMQPSymbol[] outgoingLocales;
     private Map properties;
     private long sessionHandleMax = 1024*1024*1024*2 - 1;
-    private AMQPConnection.Listener listener;
-    Transport transport;
-    boolean server;
-    String userName;
-    String password;
+    private String userName;
+    private String password;
 
     public AMQPConnectionOptions() {
     }
 
     public AMQPConnectionOptions(AMQPConnectionOptions other) {
-        this.logger = other.logger;
-        this.containerId = other.containerId;
-        this.hostName = other.hostName;
-        this.idleTimeout = other.idleTimeout;
-        this.maxFrameSize = other.maxFrameSize;
-        this.desiredCapabilities = other.desiredCapabilities;
-        this.offeredCapabilities = other.offeredCapabilities;
-        this.incomingLocales = other.incomingLocales;
-        this.properties = other.properties;
-        this.sessionHandleMax = other.sessionHandleMax;
-        this.listener = other.listener;
-        this.transport = other.transport;
-        this.server = other.server;
-        this.userName = other.userName;
-        this.password = other.password;
+        this.setLogger(other.getLogger());
+        this.setContainerId(other.getContainerId());
+        this.setHostName(other.getHostName());
+        this.setIdleTimeout(other.getIdleTimeout());
+        this.setMaxFrameSize(other.getMaxFrameSize());
+        this.setDesiredCapabilities(other.getDesiredCapabilities());
+        this.setOfferedCapabilities(other.getOfferedCapabilities());
+        this.setIncomingLocales(other.getIncomingLocales());
+        this.setProperties(other.getProperties());
+        this.setSessionHandleMax(other.getSessionHandleMax());
+        this.setUserName(other.getUserName());
+        this.setPassword(other.getPassword());
     }
 
     public AMQPConnectionOptions copy() {
         return new AMQPConnectionOptions(this);
-    }
-
-    public AMQPConnection.Listener getListener() {
-        return listener;
-    }
-
-    public void setListener(AMQPConnection.Listener listener) {
-        this.listener = listener;
     }
 
     public String getHostName() {
@@ -191,22 +178,6 @@ public class AMQPConnectionOptions {
 
     public void setContainerId(String containerId) {
         this.containerId = containerId;
-    }
-
-    public Transport getTransport() {
-        return transport;
-    }
-
-    public void setTransport(Transport transport) {
-        this.transport = transport;
-    }
-
-    public boolean isServer() {
-        return server;
-    }
-
-    public void setServer(boolean server) {
-        this.server = server;
     }
 
     public String getPassword() {

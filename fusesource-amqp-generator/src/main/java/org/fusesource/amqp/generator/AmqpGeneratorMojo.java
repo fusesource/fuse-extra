@@ -93,7 +93,14 @@ public class AmqpGeneratorMojo extends AbstractMojo {
      *
      * @parameter default-value="org.fusesource.amqp.codec"
      */
-    private String packagePrefix;
+    private String codecPackagePrefix;
+
+    /**
+     * The package prefix to put the generated Java classes in
+     *
+     * @parameter default-value="org.fusesource.amqp.types"
+     */
+    private String typesPackagePrefix;
 
     public void execute() throws MojoExecutionException {
         Log.LOG = getLog();
@@ -153,7 +160,8 @@ public class AmqpGeneratorMojo extends AbstractMojo {
             gen.setInputFiles(mainFiles);
             gen.setOutputDirectory(outputDir);
             gen.setSourceDirectory(sourceDirectory);
-            gen.setPackagePrefix(packagePrefix);
+            gen.setCodecPackagePrefix(codecPackagePrefix);
+            gen.setTypes(typesPackagePrefix);
             gen.generate();
         } catch (Exception e) {
             Log.error("Error generating code : " + e + " - " + e.getMessage(), e);

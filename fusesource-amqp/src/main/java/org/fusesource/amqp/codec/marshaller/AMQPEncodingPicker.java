@@ -17,10 +17,9 @@
 
 package org.fusesource.amqp.codec.marshaller;
 
-import org.fusesource.amqp.codec.interfaces.AMQPType;
-import org.fusesource.amqp.codec.interfaces.EncodingPicker;
-import org.fusesource.amqp.codec.types.AMQPMap;
-import org.fusesource.amqp.codec.types.MapEntries;
+import org.fusesource.amqp.types.AMQPType;
+import org.fusesource.amqp.types.MapEntries;
+import org.fusesource.amqp.types.AMQPMap;
 import org.fusesource.hawtbuf.Buffer;
 import org.fusesource.hawtbuf.UTF8Buffer;
 
@@ -30,35 +29,35 @@ import java.util.*;
 
 import static org.fusesource.amqp.codec.marshaller.ArraySupport.getArrayConstructorSize;
 import static org.fusesource.amqp.codec.marshaller.TypeRegistry.NULL_FORMAT_CODE;
-import static org.fusesource.amqp.codec.types.AMQPArray.*;
-import static org.fusesource.amqp.codec.types.AMQPBinary.BINARY_VBIN32_CODE;
-import static org.fusesource.amqp.codec.types.AMQPBinary.BINARY_VBIN8_CODE;
-import static org.fusesource.amqp.codec.types.AMQPBoolean.BOOLEAN_FALSE_CODE;
-import static org.fusesource.amqp.codec.types.AMQPBoolean.BOOLEAN_TRUE_CODE;
-import static org.fusesource.amqp.codec.types.AMQPByte.BYTE_CODE;
-import static org.fusesource.amqp.codec.types.AMQPChar.CHAR_UTF32_CODE;
-import static org.fusesource.amqp.codec.types.AMQPDecimal128.DECIMAL128_IEEE_754_CODE;
-import static org.fusesource.amqp.codec.types.AMQPDecimal32.DECIMAL32_IEEE_754_CODE;
-import static org.fusesource.amqp.codec.types.AMQPDecimal64.DECIMAL64_IEEE_754_CODE;
-import static org.fusesource.amqp.codec.types.AMQPDouble.DOUBLE_IEEE_754_CODE;
-import static org.fusesource.amqp.codec.types.AMQPFloat.FLOAT_IEEE_754_CODE;
-import static org.fusesource.amqp.codec.types.AMQPInt.INT_CODE;
-import static org.fusesource.amqp.codec.types.AMQPInt.INT_SMALLINT_CODE;
-import static org.fusesource.amqp.codec.types.AMQPList.*;
-import static org.fusesource.amqp.codec.types.AMQPLong.LONG_CODE;
-import static org.fusesource.amqp.codec.types.AMQPLong.LONG_SMALLLONG_CODE;
-import static org.fusesource.amqp.codec.types.AMQPMap.MAP_MAP32_CODE;
-import static org.fusesource.amqp.codec.types.AMQPShort.SHORT_CODE;
-import static org.fusesource.amqp.codec.types.AMQPString.STRING_STR32_UTF8_CODE;
-import static org.fusesource.amqp.codec.types.AMQPString.STRING_STR8_UTF8_CODE;
-import static org.fusesource.amqp.codec.types.AMQPSymbol.SYMBOL_SYM32_CODE;
-import static org.fusesource.amqp.codec.types.AMQPSymbol.SYMBOL_SYM8_CODE;
-import static org.fusesource.amqp.codec.types.AMQPTimestamp.TIMESTAMP_MS64_CODE;
-import static org.fusesource.amqp.codec.types.AMQPUByte.UBYTE_CODE;
-import static org.fusesource.amqp.codec.types.AMQPUInt.*;
-import static org.fusesource.amqp.codec.types.AMQPULong.*;
-import static org.fusesource.amqp.codec.types.AMQPUShort.USHORT_CODE;
-import static org.fusesource.amqp.codec.types.AMQPUUID.UUID_CODE;
+import static org.fusesource.amqp.types.AMQPArray.*;
+import static org.fusesource.amqp.types.AMQPBinary.BINARY_VBIN32_CODE;
+import static org.fusesource.amqp.types.AMQPBinary.BINARY_VBIN8_CODE;
+import static org.fusesource.amqp.types.AMQPBoolean.BOOLEAN_FALSE_CODE;
+import static org.fusesource.amqp.types.AMQPBoolean.BOOLEAN_TRUE_CODE;
+import static org.fusesource.amqp.types.AMQPByte.BYTE_CODE;
+import static org.fusesource.amqp.types.AMQPChar.CHAR_UTF32_CODE;
+import static org.fusesource.amqp.types.AMQPDecimal128.DECIMAL128_IEEE_754_CODE;
+import static org.fusesource.amqp.types.AMQPDecimal32.DECIMAL32_IEEE_754_CODE;
+import static org.fusesource.amqp.types.AMQPDecimal64.DECIMAL64_IEEE_754_CODE;
+import static org.fusesource.amqp.types.AMQPDouble.DOUBLE_IEEE_754_CODE;
+import static org.fusesource.amqp.types.AMQPFloat.FLOAT_IEEE_754_CODE;
+import static org.fusesource.amqp.types.AMQPInt.INT_CODE;
+import static org.fusesource.amqp.types.AMQPInt.INT_SMALLINT_CODE;
+import static org.fusesource.amqp.types.AMQPList.*;
+import static org.fusesource.amqp.types.AMQPLong.LONG_CODE;
+import static org.fusesource.amqp.types.AMQPLong.LONG_SMALLLONG_CODE;
+import static org.fusesource.amqp.types.AMQPMap.MAP_MAP32_CODE;
+import static org.fusesource.amqp.types.AMQPShort.SHORT_CODE;
+import static org.fusesource.amqp.types.AMQPString.STRING_STR32_UTF8_CODE;
+import static org.fusesource.amqp.types.AMQPString.STRING_STR8_UTF8_CODE;
+import static org.fusesource.amqp.types.AMQPSymbol.SYMBOL_SYM32_CODE;
+import static org.fusesource.amqp.types.AMQPSymbol.SYMBOL_SYM8_CODE;
+import static org.fusesource.amqp.types.AMQPTimestamp.TIMESTAMP_MS64_CODE;
+import static org.fusesource.amqp.types.AMQPUByte.UBYTE_CODE;
+import static org.fusesource.amqp.types.AMQPUInt.*;
+import static org.fusesource.amqp.types.AMQPULong.*;
+import static org.fusesource.amqp.types.AMQPUShort.USHORT_CODE;
+import static org.fusesource.amqp.types.AMQPUUID.UUID_CODE;
 
 /**
  *

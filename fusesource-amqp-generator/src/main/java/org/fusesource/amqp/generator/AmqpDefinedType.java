@@ -57,7 +57,7 @@ public abstract class AmqpDefinedType {
         if ( type.getProvides() != null ) {
             String types[] = type.getProvides().split(",");
             for ( String t : types ) {
-                cls()._implements(cm.ref(generator.getInterfaces() + "." + toJavaClassName(t)));
+                cls()._implements(cm.ref(generator.getInterfaces() + ".AMQP" + toJavaClassName(t)));
             }
         } else {
             cls()._implements(cm.ref(generator.getAmqpBaseType()));

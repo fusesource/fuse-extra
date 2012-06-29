@@ -41,7 +41,8 @@ public class Generator {
     private File[] inputFiles;
     private File outputDirectory;
     private File sourceDirectory;
-    private String packagePrefix;
+    private String codecPackagePrefix;
+    private String types;
 
     private HashSet<Definition> definitions = new HashSet<Definition>();
 
@@ -67,8 +68,6 @@ public class Generator {
 
     JCodeModel cm = new JCodeModel();
 
-    private String interfaces = "interfaces";
-    private String types = "types";
     private String marshaller = "marshaller";
 
     private String primitiveEncoder;
@@ -104,7 +103,7 @@ public class Generator {
         mapping.put("symbol", Buffer.class.getName());
 
         mapping.put("list", List.class.getName());
-        mapping.put("map", "org.fusesource.amqp.codec.types.MapEntries");
+        mapping.put("map", "org.fusesource.amqp.types.MapEntries");
         mapping.put("array", Object[].class.getName());
     }
 
@@ -122,10 +121,10 @@ public class Generator {
 
     public void generate() throws Exception {
 
-        primitiveEncoder = getInterfaces() + "." + "PrimitiveEncoder";
+        primitiveEncoder = getMarshaller() + "." + "PrimitiveEncoder";
         String typeRegistry = getMarshaller() + "." + "TypeRegistry";
-        String encodingPicker = getInterfaces() + "." + "EncodingPicker";
-        String encodingSizer = getInterfaces() + "." + "Sizer";
+        String encodingPicker = getMarshaller() + "." + "EncodingPicker";
+        String encodingSizer = getMarshaller() + "." + "Sizer";
 
         xmlDefinitionParser.parseXML();
 
@@ -335,7 +334,7 @@ public class Generator {
     }
 
     private void generateDefinitions() throws Exception {
-        JDefinedClass defs = cm._class(packagePrefix + ".Definitions", ClassType.INTERFACE);
+        JDefinedClass defs = cm._class(codecPackagePrefix + ".Definitions", ClassType.INTERFACE);
         Log.info("Creating %s", defs.binaryName());
 
         for ( Definition def : definitions ) {
@@ -346,7 +345,7 @@ public class Generator {
     }
 
     public JClass getBitUtils() {
-        return cm.ref(getPackagePrefix() + ".BitUtils");
+        return cm.ref(getCodecPackagePrefix() + ".BitUtils");
     }
 
     public File[] getInputFiles() {
@@ -369,12 +368,12 @@ public class Generator {
         this.sourceDirectory = sourceDirectory;
     }
 
-    public String getPackagePrefix() {
-        return packagePrefix;
+    public String getCodecPackagePrefix() {
+        return codecPackagePrefix;
     }
 
-    public void setPackagePrefix(String packagePrefix) {
-        this.packagePrefix = packagePrefix;
+    public void setCodecPackagePrefix(String codecPackagePrefix) {
+        this.codecPackagePrefix = codecPackagePrefix;
     }
 
     public JCodeModel getCm() {
@@ -382,11 +381,15 @@ public class Generator {
     }
 
     public String getInterfaces() {
-        return getPackagePrefix() + "." + interfaces;
+        return getTypes();
     }
 
     public String getTypes() {
-        return getPackagePrefix() + "." + types;
+        return types;
+    }
+
+    public void setTypes(String types) {
+        this.types = types;
     }
 
     public Map<String, String> getRestrictedMapping() {
@@ -438,7 +441,7 @@ public class Generator {
     }
 
     public String getMarshaller() {
-        return getPackagePrefix() + "." + marshaller;
+        return getCodecPackagePrefix() + "." + marshaller;
     }
 
     public TypeRegistry registry() {
@@ -460,4 +463,5 @@ public class Generator {
     public Sizer sizer() {
         return sizer;
     }
+
 }

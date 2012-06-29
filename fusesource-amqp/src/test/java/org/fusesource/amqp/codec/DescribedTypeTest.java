@@ -17,7 +17,7 @@
 
 package org.fusesource.amqp.codec;
 
-import org.fusesource.amqp.codec.types.*;
+import org.fusesource.amqp.types.*;
 import org.fusesource.hawtbuf.AsciiBuffer;
 import org.fusesource.hawtbuf.Buffer;
 import org.junit.Test;

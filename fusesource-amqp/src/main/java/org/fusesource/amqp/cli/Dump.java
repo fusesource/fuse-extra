@@ -17,8 +17,8 @@
 
 package org.fusesource.amqp.cli;
 
+import org.fusesource.amqp.codec.AMQPTransportFrame;
 import org.fusesource.amqp.codec.AMQPProtocolCodec;
-import org.fusesource.amqp.codec.types.AMQPTransportFrame;
 
 import java.io.EOFException;
 import java.io.FileInputStream;
