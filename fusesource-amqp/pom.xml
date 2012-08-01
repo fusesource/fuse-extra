@@ -24,7 +24,7 @@
   <parent>
     <groupId>org.fusesource.fuse-extra</groupId>
     <artifactId>fuse-extra-project</artifactId>
-    <version>1.3</version>
+    <version>99-master-SNAPSHOT</version>
     <relativePath>..</relativePath>
   </parent>
 
@@ -68,7 +68,7 @@
       <plugin>
         <groupId>org.fusesource.fuse-extra</groupId>
         <artifactId>fusesource-amqp-generator</artifactId>
-        <version>1.3</version>
+        <version>99-master-SNAPSHOT</version>
         <configuration>
           <mainSourceDirectory>${basedir}/src/main/amqp-specs</mainSourceDirectory>
         </configuration>

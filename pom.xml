@@ -30,7 +30,7 @@
 
   <groupId>org.fusesource.fuse-extra</groupId>
   <artifactId>fuse-extra-project</artifactId>
-  <version>1.3</version>
+  <version>99-master-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>${project.artifactId}</name>
