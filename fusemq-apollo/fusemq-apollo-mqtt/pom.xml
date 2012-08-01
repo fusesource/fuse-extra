@@ -34,7 +34,7 @@
   <description>Fuse Extra :: MQTT Protocol hander for Apollo</description>
   
   <properties>
-    <apollo-version>1.3</apollo-version>
+    <apollo-version>1.4</apollo-version>
     <karaf-version>2.2.2</karaf-version>
     <jetty-version>7.5.1.v20110908</jetty-version>
     <scalate-version>1.5.3</scalate-version>

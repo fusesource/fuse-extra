@@ -57,6 +57,10 @@ object MqttProtocolHandler extends Log {
   }
 
   val WAITING_ON_CLIENT_REQUEST = ()=> "client request"
+
+  object SessionDeliverySizer extends Sizer[(Session[Delivery], Delivery)] {
+    def size(value: (Session[Delivery], Delivery)) = Delivery.size(value._2)
+  }
 }
 
 /**
@@ -1143,11 +1147,12 @@ case class MqttSession(host_state:HostState, client_id:UTF8Buffer, session_state
         (value & 0x7FFF) // the lower 15 bits come for the original seq id.
       ).toShort
 
-    val credit_window_filter = new CreditWindowFilter[Delivery](consumer_sink.flatMap{ delivery =>
+    val credit_window_filter = new CreditWindowFilter[(Session[Delivery], Delivery)](consumer_sink.flatMap{ event =>
       queue.assertExecuting()
+      val (session, delivery) = event
       
       // Look up which QoS we need to send this message with..
-      var topic = delivery.sender.simple
+      var topic = delivery.sender.head.simple
       import collection.JavaConversions._
       addresses.get(topic).orElse(wildcards.get(topic.path).headOption) match {
           
@@ -1160,7 +1165,7 @@ case class MqttSession(host_state:HostState, client_id:UTF8Buffer, session_state
 
           // Convert the Delivery into a Request
           var publish = new PUBLISH
-          publish.topicName(new UTF8Buffer(destination_parser.encode_destination(Array(delivery.sender))))
+          publish.topicName(new UTF8Buffer(destination_parser.encode_destination(Array(delivery.sender.head))))
           if( delivery.redeliveries > 0) {
             publish.dup(true)
           }
@@ -1213,7 +1218,7 @@ case class MqttSession(host_state:HostState, client_id:UTF8Buffer, session_state
           }
       }
       
-    }, Delivery)
+    }, SessionDeliverySizer)
 
     def acked(delivery:Delivery, result:DeliveryResult) = {
       queue.assertExecuting()
@@ -1246,7 +1251,7 @@ case class MqttSession(host_state:HostState, client_id:UTF8Buffer, session_state
       producer.dispatch_queue.assertExecuting()
       retain
 
-      val downstream = session_manager.open(producer.dispatch_queue, receive_buffer_size)
+      val downstream = session_manager.open(producer.dispatch_queue, Integer.MAX_VALUE, receive_buffer_size)
 
       override def toString = "connection to "+handler.map(_.connection.transport.getRemoteAddress).getOrElse("unconnected")
 

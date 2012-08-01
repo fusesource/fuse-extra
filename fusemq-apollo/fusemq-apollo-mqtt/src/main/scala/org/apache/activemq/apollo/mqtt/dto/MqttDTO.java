@@ -18,6 +18,7 @@
 package org.apache.activemq.apollo.mqtt.dto;
 
 import org.apache.activemq.apollo.dto.ProtocolDTO;
+import org.apache.activemq.apollo.dto.ProtocolFilterDTO;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
@@ -35,11 +36,8 @@ public class MqttDTO extends ProtocolDTO {
     @XmlAttribute(name="max_message_length")
     public Integer max_message_length;
 
-    /**
-     * A broker accepts connections via it's configured connectors.
-     */
-    @XmlElement(name="protocol_filter")
-    public List<String> protocol_filters = new ArrayList<String>();
+    @XmlElementRef
+    public List<ProtocolFilterDTO> protocol_filters = new ArrayList<ProtocolFilterDTO>();
 
     @XmlAttribute(name="queue_prefix")
     public String queue_prefix;

@@ -68,8 +68,8 @@
 
     <scala-plugin-version>2.15.1</scala-plugin-version>
     <scala-version>2.9.1</scala-version>
-    <scalatest-version>1.6.1</scalatest-version>
-    <junit-version>4.8.1</junit-version>
+    <scalatest-version>1.8</scalatest-version>
+    <junit-version>4.10</junit-version>
     <slf4j-api-version>1.6.1</slf4j-api-version>
     <slf4j-version>1.6.1</slf4j-version>
     <mvnplugins-version>1.14</mvnplugins-version>
