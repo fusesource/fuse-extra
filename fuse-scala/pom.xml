@@ -25,13 +25,13 @@
   <parent>
     <groupId>org.fusesource.fuse-extra</groupId>
     <artifactId>fuse-extra-project</artifactId>
-    <version>99-master-SNAPSHOT</version>
+    <version>1.3</version>
     <relativePath>..</relativePath>
   </parent>
 
   <groupId>org.fusesource.fuse-extra</groupId>
   <artifactId>fuse-scala</artifactId>
-  <version>99-master-SNAPSHOT</version>
+  <version>1.3</version>
   <packaging>pom</packaging>
 
   <name>${project.artifactId}</name>
