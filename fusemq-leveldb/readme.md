@@ -46,8 +46,8 @@ following spring XML configuration example:
 
 ## How to Use with ActiveMQ 5.6
 
-The ActiveMQ 5.6 comes with the version 1.1 installed at `${ATCTIVEMQ_HOME}/lib/optional/fusemq-leveldb-1.1.jar`.  It is recommend that you upgrade the 1.1
-version to 1.2 which fixes a race condition that can lead to NullPointerExceptions being raised.  First delete the `${ATCTIVEMQ_HOME}/lib/optional/fusemq-leveldb-1.1.jar`
+The ActiveMQ 5.6 comes with the version 1.1 installed at `${ACTIVEMQ_HOME}/lib/optional/fusemq-leveldb-1.1.jar`.  It is recommend that you upgrade the 1.1
+version to 1.2 which fixes a race condition that can lead to NullPointerExceptions being raised.  First delete the `${ACTIVEMQ_HOME}/lib/optional/fusemq-leveldb-1.1.jar`
 file, then download and copy the [fusemq-leveldb-1.2.jar][release_jar] file to your broker's `lib/optional` directory.  Then update the broker
 configuration file and change `persistenceAdapter` elements settings so that it uses the LevelDB store using the
 following spring XML configuration example: 
